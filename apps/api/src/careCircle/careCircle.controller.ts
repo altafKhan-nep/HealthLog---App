@@ -7,9 +7,10 @@ import { AuthedRequest } from "../middleware/requireAuth";
 
 function generateCode(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const bytes = randomBytes(8);
   let code = "HL-";
   for (let i = 0; i < 8; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
+    code += chars.charAt(bytes[i] % chars.length);
   }
   return code;
 }
@@ -43,7 +44,8 @@ export async function generateInviteCode(req: AuthedRequest, res: Response) {
       expiresAt,
     });
 
-    const shareUrl = `http://10.100.10.95:4000/share/circle/${code}`;
+    const publicBase = (process.env.PUBLIC_BASE_URL || "http://192.168.254.5:4000").replace(/\/$/, "");
+    const shareUrl = `${publicBase}/share/circle/${code}`;
 
     return res.status(201).json({
       code,

@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
+import { Platform } from "react-native";
 import { apiClient } from "../api/client";
 
 interface User {
@@ -24,17 +26,55 @@ const AuthContext = createContext<AuthState | undefined>(undefined);
 const TOKEN_KEY = "healthlog_token";
 const USER_KEY = "healthlog_user";
 
+// Store the auth token in the OS keychain/keystore (SecureStore). Falls back to
+// AsyncStorage on web where SecureStore is unavailable.
+async function getToken(): Promise<string | null> {
+  try {
+    if (Platform.OS === "web") return await AsyncStorage.getItem(TOKEN_KEY);
+    return await SecureStore.getItemAsync(TOKEN_KEY);
+  } catch {
+    return null;
+  }
+}
+
+async function setToken(value: string): Promise<void> {
+  if (Platform.OS === "web") {
+    await AsyncStorage.setItem(TOKEN_KEY, value);
+    return;
+  }
+  try {
+    await SecureStore.setItemAsync(TOKEN_KEY, value);
+  } catch {
+    await AsyncStorage.setItem(TOKEN_KEY, value);
+  }
+}
+
+async function clearToken(): Promise<void> {
+  if (Platform.OS === "web") {
+    await AsyncStorage.removeItem(TOKEN_KEY);
+    return;
+  }
+  try {
+    await SecureStore.deleteItemAsync(TOKEN_KEY);
+  } catch {
+    /* ignore */
+  }
+  await AsyncStorage.removeItem(TOKEN_KEY);
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setTokenState] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const savedToken = await AsyncStorage.getItem(TOKEN_KEY);
-      const savedUser = await AsyncStorage.getItem(USER_KEY);
+      const [savedToken, savedUser] = await Promise.all([
+        getToken(),
+        AsyncStorage.getItem(USER_KEY),
+      ]);
       if (savedToken && savedUser) {
-        setToken(savedToken);
+        setTokenState(savedToken);
         setUser(JSON.parse(savedUser));
         apiClient.defaults.headers.common.Authorization = `Bearer ${savedToken}`;
       }
@@ -44,44 +84,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
-      console.log("[auth] signing in with:", email, "baseURL:", apiClient.defaults.baseURL);
       const res = await apiClient.post("/api/auth/login", { email, password });
-      console.log("[auth] login success:", res.data.user?.name);
       const { token: newToken, user: newUser } = res.data;
-      await AsyncStorage.setItem(TOKEN_KEY, newToken);
+      await setToken(newToken);
       await AsyncStorage.setItem(USER_KEY, JSON.stringify(newUser));
       apiClient.defaults.headers.common.Authorization = `Bearer ${newToken}`;
-      setToken(newToken);
+      setTokenState(newToken);
       setUser(newUser);
       return {};
     } catch (err: any) {
-      console.log("[auth] login error:", err.message, err.code, err.response?.status, err.response?.data);
       return { error: err.response?.data?.error || err.message || "Login failed" };
     }
   };
 
   const signUp = async (name: string, email: string, password: string) => {
     try {
-      console.log("[auth] signing up:", name, email);
       const res = await apiClient.post("/api/auth/signup", { name, email, password });
-      console.log("[auth] signup success:", res.data.user?.name);
       const { token: newToken, user: newUser } = res.data;
-      await AsyncStorage.setItem(TOKEN_KEY, newToken);
+      await setToken(newToken);
       await AsyncStorage.setItem(USER_KEY, JSON.stringify(newUser));
       apiClient.defaults.headers.common.Authorization = `Bearer ${newToken}`;
-      setToken(newToken);
+      setTokenState(newToken);
       setUser(newUser);
       return {};
     } catch (err: any) {
-      console.log("[auth] signup error:", err.message, err.code, err.response?.status, err.response?.data);
       return { error: err.response?.data?.error || err.message || "Sign up failed" };
     }
   };
 
   const signOut = async () => {
-    await AsyncStorage.multiRemove([TOKEN_KEY, USER_KEY]);
+    await clearToken();
+    await AsyncStorage.removeItem(USER_KEY);
     delete apiClient.defaults.headers.common.Authorization;
-    setToken(null);
+    setTokenState(null);
     setUser(null);
   };
 

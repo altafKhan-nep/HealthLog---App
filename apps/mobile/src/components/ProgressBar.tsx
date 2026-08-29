@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { colors, spacing, radius, typography } from "../theme/tokens";
+import { colors, spacing, radius, typography, ThemeColors } from "../theme/tokens";
+import { useTheme } from "../context/ThemeContext";
 
 interface ProgressBarProps {
   current: number;
@@ -8,6 +9,8 @@ interface ProgressBarProps {
 }
 
 export function ProgressBar({ current, total }: ProgressBarProps) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   return (
     <View style={styles.container}>
       <Text style={styles.label}>
@@ -29,7 +32,7 @@ export function ProgressBar({ current, total }: ProgressBarProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     alignItems: "center",
     marginBottom: spacing.lg,

@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing, typography, radius } from "../../theme/tokens";
+import { spacing, typography, radius, ThemeColors } from "../../theme/tokens";
+import { useTheme } from "../../context/ThemeContext";
 import { Button } from "../../components/Button";
 import { ProgressBar } from "../../components/ProgressBar";
 
 export default function Step3Date({ navigation, route }: any) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   const { visitData } = route.params;
   const [selectedDate, setSelectedDate] = useState(
     visitData?.visitDate ? new Date(visitData.visitDate) : new Date()
@@ -118,7 +121,7 @@ export default function Step3Date({ navigation, route }: any) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background, padding: spacing.md },
   title: { ...typography.heading, color: colors.textPrimary, marginBottom: spacing.md },
   todayChip: {

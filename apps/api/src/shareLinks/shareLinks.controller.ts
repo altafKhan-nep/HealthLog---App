@@ -60,7 +60,8 @@ export async function createVisitShareLink(req: AuthedRequest, res: Response) {
       expiresAt,
     });
 
-    const shareUrl = `http://10.100.10.95:4000/share/report/${token}`;
+    const publicBase = (process.env.PUBLIC_BASE_URL || "http://192.168.254.5:4000").replace(/\/$/, "");
+    const shareUrl = `${publicBase}/share/report/${token}`;
 
     return res.status(201).json({
       shareUrl,

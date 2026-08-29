@@ -8,7 +8,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing, typography, shadow, radius } from "../../theme/tokens";
+import { spacing, typography, shadow, radius, ThemeColors } from "../../theme/tokens";
+import { useTheme } from "../../context/ThemeContext";
 import { API_BASE_URL } from "../../api/client";
 
 interface Visit {
@@ -42,6 +43,8 @@ const tagLabels: Record<string, string> = {
 };
 
 export default function SharedReportScreen({ route }: any) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   const { token } = route.params;
   const [visits, setVisits] = useState<Visit[]>([]);
   const [loading, setLoading] = useState(true);
@@ -147,7 +150,7 @@ export default function SharedReportScreen({ route }: any) {
                 const refParts = test.referenceRange?.split("-").map(Number) || [];
                 let valueColor = colors.textPrimary;
                 if (refParts.length === 2 && !isNaN(refParts[0]) && !isNaN(refParts[1])) {
-                  if (test.value < refParts[0]) valueColor = "#D89B2A";
+                  if (test.value < refParts[0]) valueColor = colors.statusProcessing;
                   else if (test.value > refParts[1]) valueColor = colors.statusError;
                   else valueColor = colors.statusReady;
                 }
@@ -201,7 +204,7 @@ export default function SharedReportScreen({ route }: any) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,

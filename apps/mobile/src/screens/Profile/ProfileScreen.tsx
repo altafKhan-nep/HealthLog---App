@@ -5,9 +5,10 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { colors, spacing, typography, radius, shadow } from "../../theme/tokens";
+import { colors, spacing, typography, radius, shadow, ThemeColors } from "../../theme/tokens";
 import { apiClient } from "../../api/client";
 import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
 import { Button } from "../../components/Button";
 
 interface UserProfile {
@@ -31,6 +32,9 @@ const GENDERS = ["Male", "Female", "Other", "Prefer not to say"];
 export default function ProfileScreen() {
   const navigation = useNavigation<any>();
   const { user, signOut, updateUser } = useAuth();
+  const { colors } = useTheme();
+  const { mode, setMode } = useTheme();
+  const styles = makeStyles(colors);
   const [profile, setProfile] = useState<UserProfile>({
     name: user?.name || "",
     email: user?.email || "",
@@ -358,6 +362,44 @@ export default function ProfileScreen() {
         </View>
       </View>
 
+      <View style={[styles.section, shadow.sm]}>
+        <Text style={styles.sectionTitle}>Appearance</Text>
+        <Text style={styles.appearanceSub}>Choose how HealthLog looks</Text>
+        <View style={styles.themeOptions}>
+          {[
+            { key: "light", label: "Light", icon: "sunny-outline" },
+            { key: "dark", label: "Dark", icon: "moon-outline" },
+            { key: "system", label: "Follow Device", icon: "phone-portrait-outline" },
+            { key: "auto", label: "Auto by Time", icon: "time-outline" },
+          ].map((opt) => {
+            const active = mode === opt.key;
+            return (
+              <TouchableOpacity
+                key={opt.key}
+                style={[styles.themeOption, active && styles.themeOptionActive]}
+                onPress={() => setMode(opt.key as any)}
+                activeOpacity={0.7}
+              >
+                <Ionicons
+                  name={opt.icon as any}
+                  size={20}
+                  color={active ? colors.textInverse : colors.textSecondary}
+                />
+                <Text style={[styles.themeOptionText, active && styles.themeOptionTextActive]}>
+                  {opt.label}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+        {mode === "system" && (
+          <Text style={styles.appearanceHint}>Follows your device's light / dark setting</Text>
+        )}
+        {mode === "auto" && (
+          <Text style={styles.appearanceHint}>Light after sunrise (6 AM), dark after sunset (8 PM)</Text>
+        )}
+      </View>
+
       {editing && (
         <Button
           title={saving ? "Saving..." : "Save Profile"}
@@ -377,7 +419,7 @@ export default function ProfileScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   content: { padding: spacing.md, paddingBottom: spacing.xxl },
   header: {
@@ -451,5 +493,18 @@ const styles = StyleSheet.create({
   version: {
     ...typography.caption, color: colors.textSecondary, textAlign: "center",
     marginTop: spacing.xl,
+  },
+  appearanceSub: { ...typography.caption, color: colors.textSecondary, marginBottom: spacing.md },
+  themeOptions: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
+  themeOption: {
+    flexGrow: 1, flexBasis: "45%", alignItems: "center", gap: spacing.xs,
+    paddingVertical: spacing.md, borderRadius: radius.card, borderWidth: 1.5, borderColor: colors.border,
+    backgroundColor: colors.background,
+  },
+  themeOptionActive: { backgroundColor: colors.primary, borderColor: colors.primary },
+  themeOptionText: { ...typography.label, color: colors.textSecondary },
+  themeOptionTextActive: { color: colors.textInverse },
+  appearanceHint: {
+    ...typography.caption, color: colors.textSecondary, marginTop: spacing.sm, textAlign: "center",
   },
 });

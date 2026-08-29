@@ -8,12 +8,15 @@ import {
   TextInput,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing, typography, radius } from "../../theme/tokens";
+import { spacing, typography, radius, ThemeColors } from "../../theme/tokens";
+import { useTheme } from "../../context/ThemeContext";
 import { apiClient } from "../../api/client";
 import { Button } from "../../components/Button";
 import { ProgressBar } from "../../components/ProgressBar";
 
 export default function Step2Doctor({ navigation, route }: any) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   const { visitData } = route.params;
   const [doctors, setDoctors] = useState<string[]>([]);
   const [selected, setSelected] = useState(visitData?.doctorName || "");
@@ -109,7 +112,7 @@ export default function Step2Doctor({ navigation, route }: any) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background, padding: spacing.md },
   title: { ...typography.heading, color: colors.textPrimary, marginBottom: spacing.xs },
   optional: { ...typography.body, color: colors.textSecondary, marginBottom: spacing.lg },

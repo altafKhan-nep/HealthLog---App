@@ -5,7 +5,8 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing, typography, radius, shadow } from "../../theme/tokens";
+import { spacing, typography, radius, shadow, ThemeColors } from "../../theme/tokens";
+import { useTheme } from "../../context/ThemeContext";
 import { Button } from "../../components/Button";
 import { ProgressBar } from "../../components/ProgressBar";
 
@@ -15,6 +16,7 @@ interface FileItem {
   base64: string | null;
   name: string | null;
   type: "image" | "pdf";
+  size: number;
 }
 
 let _fileId = 0;
@@ -23,6 +25,8 @@ function nextFileId() {
 }
 
 export default function Step4Upload({ navigation, route }: any) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   const { visitData } = route.params;
   const [files, setFiles] = useState<FileItem[]>(visitData?.files || []);
 
@@ -46,14 +50,17 @@ export default function Step4Upload({ navigation, route }: any) {
 
     if (!result.canceled && result.assets[0]) {
       const asset = result.assets[0];
+      const base64 = asset.base64 || null;
+      const size = base64 ? Math.round((base64.length * 3) / 4) : 0;
       setFiles((prev) => [
         ...prev,
         {
           id: nextFileId(),
           uri: asset.uri,
-          base64: asset.base64 || null,
+          base64,
           name: null,
           type: "image",
+          size,
         },
       ]);
     }
@@ -81,6 +88,7 @@ export default function Step4Upload({ navigation, route }: any) {
               base64: base64data,
               name: asset.name,
               type: "pdf",
+              size: typeof asset.size === "number" ? asset.size : base64data ? Math.round((base64data.length * 3) / 4) : 0,
             },
           ]);
         };
@@ -185,7 +193,7 @@ export default function Step4Upload({ navigation, route }: any) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background, padding: spacing.md },
   title: { ...typography.heading, color: colors.textPrimary, marginBottom: spacing.xs },
   optional: { ...typography.body, color: colors.textSecondary, marginBottom: spacing.md },

@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet, TextInputProps, ViewStyle } from "react-native";
-import { colors, spacing, radius, typography } from "../theme/tokens";
+import { colors, spacing, radius, typography, ThemeColors } from "../theme/tokens";
+import { useTheme } from "../context/ThemeContext";
 
 interface InputProps extends TextInputProps {
   label: string;
@@ -9,6 +10,8 @@ interface InputProps extends TextInputProps {
 }
 
 export function Input({ label, error, containerStyle, ...props }: InputProps) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   return (
     <View style={[styles.container, containerStyle]}>
       <Text style={styles.label}>{label}</Text>
@@ -22,7 +25,7 @@ export function Input({ label, error, containerStyle, ...props }: InputProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     marginBottom: spacing.md,
   },

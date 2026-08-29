@@ -10,13 +10,16 @@ import {
   Modal,
   Pressable,
   Alert,
+  TextInput,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import QRCode from "react-native-qrcode-svg";
-import { colors, spacing, typography, shadow, radius } from "../../theme/tokens";
+import { spacing, typography, shadow, radius, ThemeColors } from "../../theme/tokens";
+import { useTheme } from "../../context/ThemeContext";
 import { apiClient } from "../../api/client";
 import { Button } from "../../components/Button";
+import { Badge } from "../../components/Badge";
 import { copyToClipboard, shareContent } from "../../utils/platform";
 
 interface VisitDetail {
@@ -26,7 +29,7 @@ interface VisitDetail {
   doctorName: string;
   tag: string;
   status: string;
-  attachments: Array<{ fileUrl: string; fileType: string }>;
+  attachments: Array<{ fileUrl: string; fileType: string; name?: string; size?: number; createdAt?: string }>;
   extractedFields: {
     diagnosis: string | null;
     medication: string | null;
@@ -40,7 +43,48 @@ interface VisitDetail {
   };
 }
 
+function renderSummary(summary: string) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
+  const lines = summary
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .map((l) => l.replace(/^[•\-\*]\s*/, ""));
+
+  if (lines.length <= 1 && !summary.includes("•")) {
+    return <Text style={styles.summaryText}>{summary}</Text>;
+  }
+
+  return (
+    <View style={styles.summaryList}>
+      {lines.map((line, i) => (
+        <View key={i} style={styles.summaryBulletRow}>
+          <View style={styles.summaryBulletDot} />
+          <Text style={styles.summaryText}>{line}</Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+function formatFileSize(bytes?: number): string {
+  if (bytes === undefined || bytes === null) return "Size unknown";
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+}
+
+function formatDate(value?: string): string {
+  if (!value) return "—";
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return "—";
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+
 export default function VisitDetailScreen({ route }: any) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   const navigation = useNavigation<any>();
   const { visitId } = route.params;
   const [visit, setVisit] = useState<VisitDetail | null>(null);
@@ -49,19 +93,83 @@ export default function VisitDetailScreen({ route }: any) {
   const [shareLink, setShareLink] = useState<string | null>(null);
   const [shareLoading, setShareLoading] = useState(false);
   const [expiryMinutes, setExpiryMinutes] = useState(1440); // 24h default
+  const [editingDoctor, setEditingDoctor] = useState(false);
+  const [doctorDraft, setDoctorDraft] = useState("");
+  const [savingDoctor, setSavingDoctor] = useState(false);
+
+  const fetchVisit = async () => {
+    try {
+      const res = await apiClient.get(`/api/visits/${visitId}`);
+      setVisit(res.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await apiClient.get(`/api/visits/${visitId}`);
-        setVisit(res.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    })();
+    fetchVisit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visitId]);
+
+  const deleteAttachment = async (index: number) => {
+    Alert.alert(
+      "Delete this report?",
+      "Are you sure you want to delete this document? This cannot be undone.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await apiClient.delete(`/api/visits/${visitId}/attachments/${index}`);
+              await fetchVisit();
+            } catch (err: any) {
+              Alert.alert("Error", err.response?.data?.error || "Failed to delete document");
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const deleteVisit = () => {
+    Alert.alert(
+      "Delete this visit?",
+      "Are you sure you want to delete this visit and all its documents? This cannot be undone.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await apiClient.delete(`/api/visits/${visitId}`);
+              navigation.goBack();
+            } catch (err: any) {
+              Alert.alert("Error", err.response?.data?.error || "Failed to delete visit");
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const saveDoctor = async () => {
+    if (!doctorDraft.trim()) return;
+    setSavingDoctor(true);
+    try {
+      await apiClient.put(`/api/visits/${visitId}`, { doctorName: doctorDraft.trim() });
+      await fetchVisit();
+      setEditingDoctor(false);
+    } catch (err: any) {
+      Alert.alert("Error", err.response?.data?.error || "Failed to update doctor");
+    } finally {
+      setSavingDoctor(false);
+    }
+  };
 
   const generateShareLink = async () => {
     setShareLoading(true);
@@ -140,22 +248,59 @@ export default function VisitDetailScreen({ route }: any) {
           })}
         </Text>
         <View style={styles.badgeRow}>
-          <View style={[styles.statusBadge, statusVariant === "ready" && styles.statusReady]}>
-            <View style={[styles.statusDot, statusVariant === "ready" && styles.dotReady]} />
-            <Text style={[styles.statusText, statusVariant === "ready" && styles.textReady]}>
-              {visit.status === "ready" ? "Reviewed" : "Processing"}
-            </Text>
-          </View>
+          <Badge
+            variant={statusVariant}
+            label={visit.status === "ready" ? "Reviewed" : visit.status === "processing" ? "Processing" : "Failed"}
+          />
           <View style={styles.tagBadge}>
             <Text style={styles.tagText}>{tagLabels[visit.tag] || visit.tag}</Text>
           </View>
         </View>
+
+        {editingDoctor ? (
+          <View style={styles.doctorEditRow}>
+            <TextInput
+              style={styles.doctorInput}
+              value={doctorDraft}
+              onChangeText={setDoctorDraft}
+              placeholder="Doctor name"
+              placeholderTextColor={colors.textSecondary}
+              autoFocus
+            />
+            <TouchableOpacity style={styles.doctorSaveBtn} onPress={saveDoctor} disabled={savingDoctor}>
+              {savingDoctor ? (
+                <ActivityIndicator color="#fff" size="small" />
+              ) : (
+                <Text style={styles.doctorSaveText}>Save</Text>
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.doctorCancelBtn} onPress={() => setEditingDoctor(false)}>
+              <Ionicons name="close" size={18} color={colors.textSecondary} />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.doctorRow}>
+            <Ionicons name="person-outline" size={16} color={colors.textSecondary} />
+            <Text style={styles.doctorText} numberOfLines={1}>
+              {visit.doctorName || "Unknown Provider"}
+            </Text>
+            <TouchableOpacity
+              style={styles.doctorEditBtn}
+              onPress={() => {
+                setDoctorDraft(visit.doctorName || "");
+                setEditingDoctor(true);
+              }}
+            >
+              <Ionicons name="pencil" size={16} color={colors.primary} />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
 
       {visit.extractedFields?.plainLanguageSummary && (
         <View style={[styles.section, styles.summaryCard]}>
           <Text style={styles.sectionTitle}>What this report means</Text>
-          <Text style={styles.summaryText}>{visit.extractedFields.plainLanguageSummary}</Text>
+          {renderSummary(visit.extractedFields.plainLanguageSummary)}
         </View>
       )}
 
@@ -166,7 +311,7 @@ export default function VisitDetailScreen({ route }: any) {
             const refParts = test.referenceRange?.split("-").map(Number) || [];
             let valueColor = colors.textPrimary;
             if (refParts.length === 2 && !isNaN(refParts[0]) && !isNaN(refParts[1])) {
-              if (test.value < refParts[0]) valueColor = "#D89B2A";
+              if (test.value < refParts[0]) valueColor = colors.statusProcessing;
               else if (test.value > refParts[1]) valueColor = colors.statusError;
               else valueColor = colors.statusReady;
             }
@@ -207,36 +352,66 @@ export default function VisitDetailScreen({ route }: any) {
             <Text style={styles.sectionTitle}>Attached Documents</Text>
             <Text style={styles.attachmentCount}>{visit.attachments.length} file{visit.attachments.length > 1 ? "s" : ""}</Text>
           </View>
-          <TouchableOpacity
-            style={styles.attachmentGrid}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate("ReportViewer", { attachments: visit.attachments, initialIndex: 0 })}
-          >
-            {visit.attachments.slice(0, 3).map((att, i) => (
-              <View key={i} style={styles.thumbWrap}>
-                {att.fileType?.includes("pdf") ? (
-                  <View style={styles.pdfThumb}>
-                    <Ionicons name="document-text" size={24} color={colors.primary} />
-                    <Text style={styles.pdfThumbLabel}>PDF</Text>
+          <View style={styles.attachmentList}>
+            {visit.attachments.map((att, i) => {
+              const isPDF = att.fileType?.includes("pdf");
+              const attName = att.name || (isPDF ? `PDF ${i + 1}` : `Image ${i + 1}`);
+              return (
+                <TouchableOpacity
+                  key={i}
+                  style={styles.attachmentRow}
+                  activeOpacity={0.7}
+                  onPress={() =>
+                    navigation.navigate("ReportViewer", {
+                      attachments: visit.attachments,
+                      initialIndex: i,
+                      visitId,
+                    })
+                  }
+                >
+                  {isPDF ? (
+                    <View style={styles.attIconWrap}>
+                      <Ionicons name="document-text" size={24} color={colors.primary} />
+                    </View>
+                  ) : (
+                    <Image source={{ uri: att.fileUrl }} style={styles.attThumb} resizeMode="cover" />
+                  )}
+                  <View style={styles.attInfo}>
+                    <Text style={styles.attName} numberOfLines={1}>
+                      {attName}
+                    </Text>
+                    <Text style={styles.attMeta} numberOfLines={1}>
+                      {isPDF ? "PDF document" : "Image"} · {formatFileSize(att.size)} · {formatDate(att.createdAt)}
+                    </Text>
                   </View>
-                ) : (
-                  <Image source={{ uri: att.fileUrl }} style={styles.thumb} resizeMode="cover" />
-                )}
-                {i === 2 && visit.attachments.length > 3 && (
-                  <View style={styles.thumbOverlay}>
-                    <Text style={styles.thumbOverlayText}>+{visit.attachments.length - 3}</Text>
-                  </View>
-                )}
-              </View>
-            ))}
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.viewAllBtn}
-            onPress={() => navigation.navigate("ReportViewer", { attachments: visit.attachments, initialIndex: 0 })}
-          >
-            <Ionicons name="expand-outline" size={16} color={colors.primary} />
-            <Text style={styles.viewAllText}>View all in full screen</Text>
-          </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.attDelete}
+                    onPress={() => deleteAttachment(i)}
+                    hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                  >
+                    <Ionicons name="trash-outline" size={20} color={colors.statusError} />
+                  </TouchableOpacity>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+          {visit.attachments.length > 1 && (
+            <TouchableOpacity
+              style={styles.viewAllBtn}
+              onPress={() =>
+                navigation.navigate("ReportViewer", {
+                  attachments: visit.attachments,
+                  initialIndex: 0,
+                  visitId,
+                })
+              }
+            >
+              <Ionicons name="expand-outline" size={16} color={colors.primary} />
+              <Text style={styles.viewAllText}>
+                View all {visit.attachments.length} files in full screen
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       )}
 
@@ -249,6 +424,11 @@ export default function VisitDetailScreen({ route }: any) {
       >
         <Ionicons name="share-outline" size={20} color={colors.primary} />
         <Text style={styles.shareText}>Share this report</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.deleteVisitBtn} onPress={deleteVisit}>
+        <Ionicons name="trash-outline" size={20} color={colors.statusError} />
+        <Text style={styles.deleteVisitText}>Delete visit</Text>
       </TouchableOpacity>
 
       <Modal visible={shareModalVisible} transparent animationType="fade">
@@ -346,7 +526,7 @@ export default function VisitDetailScreen({ route }: any) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
@@ -388,20 +568,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: spacing.sm,
   },
-  statusBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 3,
-    borderRadius: radius.full,
-    backgroundColor: colors.divider,
-  },
-  statusReady: { backgroundColor: colors.statusReadyBg },
-  statusDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.textSecondary },
-  dotReady: { backgroundColor: colors.statusReady },
-  statusText: { ...typography.caption, fontWeight: "600", color: colors.textSecondary },
-  textReady: { color: colors.statusReady },
   tagBadge: {
     paddingHorizontal: spacing.sm,
     paddingVertical: 3,
@@ -409,6 +575,31 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryLight,
   },
   tagText: { ...typography.caption, fontWeight: "600", color: colors.primary, textTransform: "capitalize" },
+  doctorRow: {
+    flexDirection: "row", alignItems: "center", gap: spacing.xs, marginTop: spacing.sm,
+  },
+  doctorText: { ...typography.body, color: colors.textSecondary, flex: 1 },
+  doctorEditBtn: {
+    width: 30, height: 30, borderRadius: 15, backgroundColor: colors.primaryLight,
+    alignItems: "center", justifyContent: "center",
+  },
+  doctorEditRow: {
+    flexDirection: "row", alignItems: "center", gap: spacing.xs, marginTop: spacing.sm,
+  },
+  doctorInput: {
+    flex: 1, borderWidth: 1, borderColor: colors.border, borderRadius: radius.sm,
+    paddingHorizontal: spacing.sm, paddingVertical: 8, fontSize: 15, color: colors.textPrimary,
+    backgroundColor: colors.surface,
+  },
+  doctorSaveBtn: {
+    paddingHorizontal: spacing.md, paddingVertical: 8, borderRadius: radius.sm,
+    backgroundColor: colors.primary, alignItems: "center", justifyContent: "center",
+  },
+  doctorSaveText: { ...typography.button, color: colors.textInverse, fontSize: 13 },
+  doctorCancelBtn: {
+    width: 34, height: 34, borderRadius: 17, backgroundColor: colors.divider,
+    alignItems: "center", justifyContent: "center",
+  },
   section: {
     marginBottom: spacing.lg,
   },
@@ -429,44 +620,66 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontWeight: "600",
   },
-  attachmentGrid: {
-    flexDirection: "row",
+  attachmentList: {
     gap: spacing.sm,
   },
-  thumbWrap: {
-    width: 100,
-    height: 100,
+  attachmentRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+    backgroundColor: colors.surface,
+    borderRadius: radius.card,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: spacing.sm + spacing.xs,
+    ...shadow.sm,
+  },
+  attIconWrap: {
+    width: 48,
+    height: 48,
     borderRadius: radius.sm,
-    overflow: "hidden",
-    backgroundColor: colors.border,
-  },
-  thumb: {
-    width: "100%",
-    height: "100%",
-  },
-  pdfThumb: {
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: colors.primaryLight,
-    gap: spacing.xs,
-  },
-  pdfThumbLabel: {
-    ...typography.caption,
-    color: colors.primary,
-    fontWeight: "700",
-  },
-  thumbOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.6)",
     alignItems: "center",
     justifyContent: "center",
   },
-  thumbOverlayText: {
-    ...typography.heading,
-    color: "#fff",
-    fontSize: 20,
+  attThumb: {
+    width: 48,
+    height: 48,
+    borderRadius: radius.sm,
+  },
+  attInfo: {
+    flex: 1,
+    gap: 2,
+  },
+  attName: {
+    ...typography.bodyMedium,
+    color: colors.textPrimary,
+  },
+  attMeta: {
+    ...typography.caption,
+    color: colors.textSecondary,
+  },
+  attDelete: {
+    width: 38,
+    height: 38,
+    borderRadius: radius.sm,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  deleteVisitBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: spacing.sm,
+    paddingVertical: spacing.md,
+    marginTop: spacing.md,
+    borderRadius: radius.card,
+    borderWidth: 1.5,
+    borderColor: colors.statusError,
+  },
+  deleteVisitText: {
+    ...typography.button,
+    color: colors.statusError,
   },
   viewAllBtn: {
     flexDirection: "row",
@@ -491,6 +704,21 @@ const styles = StyleSheet.create({
     ...typography.body,
     color: colors.textPrimary,
     lineHeight: 26,
+  },
+  summaryList: {
+    gap: spacing.sm,
+  },
+  summaryBulletRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: spacing.sm,
+  },
+  summaryBulletDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors.primary,
+    marginTop: 8,
   },
   testRow: {
     flexDirection: "row",

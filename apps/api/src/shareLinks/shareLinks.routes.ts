@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { requireAuth } from "../middleware/requireAuth";
+import { publicShareLimiter } from "../middleware/rateLimit";
 import {
   createShareLink,
   createVisitShareLink,
@@ -10,7 +11,7 @@ import {
 
 const router = Router();
 
-router.get("/public/:token", getSharedVisits);
+router.get("/public/:token", publicShareLimiter, getSharedVisits);
 
 router.use(requireAuth);
 router.get("/", listShareLinks);

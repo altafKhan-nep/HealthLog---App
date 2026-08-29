@@ -5,8 +5,28 @@ import { Hospital } from "../hospitals/hospital.model";
 import { Visit } from "./visit.model";
 import { User } from "../auth/auth.model";
 import { AuthedRequest } from "../middleware/requireAuth";
-import { uploadToCloudinary, deleteFromCloudinary } from "../config/cloudinary";
-import { extractTextFromImage, extractReportFields, generatePlainLanguageSummary } from "../config/groq";
+import { uploadToCloudinary, deleteFromCloudinary } from "../careCircle/config/cloudinary";
+import { extractTextFromImage, extractReportFields, generatePlainLanguageSummary } from "../careCircle/config/groq";
+
+const MAX_BATCH_FILES = 20;
+const MAX_FILE_BYTES = 15 * 1024 * 1024;
+const ALLOWED_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/heic",
+  "application/pdf",
+]);
+
+function validateUpload(mimeType: string, byteLength: number): string | null {
+  if (!ALLOWED_MIME_TYPES.has(mimeType)) {
+    return `Unsupported file type: ${mimeType}`;
+  }
+  if (byteLength > MAX_FILE_BYTES) {
+    return `File exceeds the ${Math.round(MAX_FILE_BYTES / (1024 * 1024))}MB limit`;
+  }
+  return null;
+}
 
 /** POST /api/visits — create a new visit */
 export async function createVisit(req: AuthedRequest, res: Response) {
@@ -69,16 +89,32 @@ export async function uploadAttachment(req: AuthedRequest, res: Response) {
       return res.status(400).json({ error: "No file provided" });
     }
 
+    const validateErr = validateUpload(mimeType || "application/octet-stream", fileBuffer.length);
+    if (validateErr) return res.status(400).json({ error: validateErr });
+
     const { url, publicId } = await uploadToCloudinary(fileBuffer, mimeType);
+
+    const name = (req.body.name as string) || (req.file?.originalname as string) || "";
+    const size = Number(req.body.size) || fileBuffer.length;
 
     visit.attachments.push({
       fileUrl: url,
       fileType: mimeType,
       cloudinaryPublicId: publicId,
+      name,
+      size,
     });
+
+    // Persist the newly added attachment (must save the full doc, not just a field update).
+    await visit.save();
+
+    // Mark processing only if not already ready (avoid clobbering a completed report)
+    await Visit.updateOne(
+      { _id: visit._id, status: { $ne: "ready" } },
+      { $set: { status: "processing", entryMethod: "scan" } }
+    );
     visit.status = "processing";
     visit.entryMethod = "scan";
-    await visit.save();
 
     // Process in background (non-blocking)
     processReport(visit._id.toString(), url, mimeType, fileBuffer).catch((err) =>
@@ -102,33 +138,61 @@ export async function uploadBatchAttachments(req: AuthedRequest, res: Response) 
     if (!Array.isArray(files) || files.length === 0) {
       return res.status(400).json({ error: "files array is required" });
     }
+    if (files.length > MAX_BATCH_FILES) {
+      return res.status(400).json({ error: `You can upload a maximum of ${MAX_BATCH_FILES} files at once` });
+    }
 
-    const uploaded: Array<{ fileUrl: string; fileType: string; cloudinaryPublicId: string }> = [];
+    const uploaded: Array<{ fileUrl: string; fileType: string; cloudinaryPublicId: string; name: string; size: number }> = [];
+    const toProcess: Array<{ url: string; mimeType: string; fileBuffer: Buffer }> = [];
 
     for (const file of files) {
       try {
         const base64Data = (file.imageBase64 || "").replace(/^data:[\w/]+;base64,/, "");
         const fileBuffer = Buffer.from(base64Data, "base64");
-        const mimeType = file.mimeType || "image/jpeg";
+        const mimeType = file.mimeType || "application/octet-stream";
+
+        const validateErr = validateUpload(mimeType, fileBuffer.length);
+        if (validateErr) {
+          console.error("[batch] rejected file:", validateErr);
+          continue;
+        }
 
         const { url, publicId } = await uploadToCloudinary(fileBuffer, mimeType);
-        uploaded.push({ fileUrl: url, fileType: mimeType, cloudinaryPublicId: publicId });
-
-        // Process first file in background (non-blocking)
-        if (uploaded.length === 1) {
-          processReport(visit._id.toString(), url, mimeType, fileBuffer).catch((err) =>
-            console.error("[pipeline] processing error:", err)
-          );
-        }
+        uploaded.push({
+          fileUrl: url,
+          fileType: mimeType,
+          cloudinaryPublicId: publicId,
+          name: file.name || "",
+          size: Number(file.size) || fileBuffer.length,
+        });
+        toProcess.push({ url, mimeType, fileBuffer });
       } catch (fileErr) {
         console.error("[batch] failed to upload file:", fileErr);
       }
     }
 
+    if (uploaded.length === 0) {
+      return res.status(500).json({ error: "All file uploads failed" });
+    }
+
     visit.attachments.push(...uploaded);
+
+    // Mark processing only if not already ready (avoid clobbering a completed report)
+    await Visit.updateOne(
+      { _id: visit._id, status: { $ne: "ready" } },
+      { $set: { status: "processing", entryMethod: "scan" } }
+    );
     visit.status = "processing";
     visit.entryMethod = "scan";
     await visit.save();
+
+    // Wait for the persistence above to be safe, then process each uploaded file
+    const visitIdStr = visit._id.toString();
+    for (const p of toProcess) {
+      processReport(visitIdStr, p.url, p.mimeType, p.fileBuffer).catch((err) =>
+        console.error("[pipeline] processing error:", err)
+      );
+    }
 
     return res.json(visit);
   } catch (err) {
@@ -141,6 +205,13 @@ export async function uploadBatchAttachments(req: AuthedRequest, res: Response) 
 async function processReport(visitId: string, fileUrl: string, fileType: string, fileBuffer?: Buffer) {
   const visit = await Visit.findById(visitId);
   if (!visit) return;
+
+  const finalize = async (extractedFields: any, doctorName?: string) => {
+    const update: any = { $set: { extractedFields, status: "ready" } };
+    if (doctorName) update.$set.doctorName = doctorName;
+    // Atomic update — this write wins over any stale "processing" write.
+    await Visit.findByIdAndUpdate(visitId, update, { new: true });
+  };
 
   try {
     let ocrText = "";
@@ -163,16 +234,14 @@ async function processReport(visitId: string, fileUrl: string, fileType: string,
 
     if (!ocrText.trim()) {
       // No text extracted — mark as ready with a note
-      visit.extractedFields = {
+      await finalize({
         diagnosis: null,
         medication: null,
         plainLanguageSummary: fileType.includes("pdf")
           ? "PDF uploaded successfully. Text extraction returned no content. You can view the PDF in the visit details."
           : "Report photo uploaded successfully. AI text extraction is not available for this image type. You can view the photo in the visit details.",
         testResults: [],
-      };
-      visit.status = "ready";
-      await visit.save();
+      });
       console.log("[pipeline] no text extracted, saved as ready");
       return;
     }
@@ -183,32 +252,27 @@ async function processReport(visitId: string, fileUrl: string, fileType: string,
     // Generate plain-language summary
     const plainLanguageSummary = await generatePlainLanguageSummary(ocrText, extractedFields);
 
-    visit.extractedFields = {
-      diagnosis: extractedFields.diagnosis || null,
-      medication: extractedFields.medication || null,
-      plainLanguageSummary,
-      testResults: extractedFields.testResults || [],
-    };
+    const doctorName = !visit.doctorName && extractedFields.doctorName ? extractedFields.doctorName : undefined;
 
-    // If doctor name wasn't provided, use extracted
-    if (!visit.doctorName && extractedFields.doctorName) {
-      visit.doctorName = extractedFields.doctorName;
-    }
-
-    visit.status = "ready";
-    await visit.save();
+    await finalize(
+      {
+        diagnosis: extractedFields.diagnosis || null,
+        medication: extractedFields.medication || null,
+        plainLanguageSummary,
+        testResults: extractedFields.testResults || [],
+      },
+      doctorName
+    );
     console.log("[pipeline] processing complete, status: ready");
   } catch (err) {
     console.error("[pipeline] failed:", err);
     // Don't mark as failed — keep it "ready" with the file attached
-    visit.extractedFields = {
+    await finalize({
       diagnosis: null,
       medication: null,
       plainLanguageSummary: "Report uploaded. AI processing encountered an error. Please consult your doctor for interpretation.",
       testResults: [],
-    };
-    visit.status = "ready";
-    await visit.save();
+    });
   }
 }
 
@@ -280,11 +344,25 @@ export async function updateVisit(req: AuthedRequest, res: Response) {
     const { hospitalId, visitDate, doctorName, reason, tag } = req.body;
 
     if (hospitalId && hospitalId !== visit.hospitalId.toString()) {
+      const targetHospital = await Hospital.findOne({
+        _id: hospitalId,
+        $or: [{ isGlobal: true }, { userId: req.userId }],
+      });
+      if (!targetHospital) {
+        return res.status(404).json({ error: "Hospital not found" });
+      }
       await Hospital.findByIdAndUpdate(visit.hospitalId, { $inc: { visitCount: -1 } });
       await Hospital.findByIdAndUpdate(hospitalId, { $inc: { visitCount: 1 } });
     }
 
-    Object.assign(visit, { hospitalId, visitDate, doctorName, reason, tag });
+    const updateFields: any = {};
+    if (hospitalId !== undefined) updateFields.hospitalId = hospitalId;
+    if (visitDate !== undefined) updateFields.visitDate = visitDate;
+    if (doctorName !== undefined) updateFields.doctorName = doctorName;
+    if (reason !== undefined) updateFields.reason = reason;
+    if (tag !== undefined) updateFields.tag = tag;
+
+    Object.assign(visit, updateFields);
     await visit.save();
 
     const populated = await visit.populate("hospitalId", "name location type");
@@ -317,5 +395,46 @@ export async function deleteVisit(req: AuthedRequest, res: Response) {
   } catch (err) {
     console.error("[visits] delete error:", err);
     return res.status(500).json({ error: "Failed to delete visit" });
+  }
+}
+
+/** DELETE /api/visits/:id/attachments/:attIndex — delete a single attachment */
+export async function deleteAttachment(req: AuthedRequest, res: Response) {
+  try {
+    const visit = await Visit.findOne({ _id: req.params.id, userId: req.userId });
+    if (!visit) return res.status(404).json({ error: "Visit not found" });
+
+    const attIndex = parseInt(req.params.attIndex, 10);
+    if (isNaN(attIndex) || attIndex < 0 || attIndex >= visit.attachments.length) {
+      return res.status(400).json({ error: "Invalid attachment index" });
+    }
+
+    const [attachment] = visit.attachments.splice(attIndex, 1);
+
+    if (attachment?.cloudinaryPublicId) {
+      try {
+        await deleteFromCloudinary(attachment.cloudinaryPublicId);
+      } catch (e) {
+        console.error("[visits] failed to delete attachment from cloudinary:", attachment.cloudinaryPublicId);
+      }
+    }
+
+    // If deleting the AI-processed file, clear extracted fields and reset status
+    if (visit.extractedFields?.plainLanguageSummary) {
+      visit.extractedFields = {
+        diagnosis: null,
+        medication: null,
+        plainLanguageSummary: null,
+        testResults: [],
+      };
+    }
+    visit.status = visit.attachments.length > 0 ? "processing" : "ready";
+    await visit.save();
+
+    const populated = await visit.populate({ path: "hospitalId", select: "name location type isGlobal" });
+    return res.json(populated);
+  } catch (err) {
+    console.error("[visits] delete attachment error:", err);
+    return res.status(500).json({ error: "Failed to delete attachment" });
   }
 }

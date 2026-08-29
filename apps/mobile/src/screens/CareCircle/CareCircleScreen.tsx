@@ -5,7 +5,8 @@ import {
 } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing, typography, radius, shadow } from "../../theme/tokens";
+import { spacing, typography, radius, shadow, ThemeColors } from "../../theme/tokens";
+import { useTheme } from "../../context/ThemeContext";
 import { apiClient } from "../../api/client";
 import { Avatar } from "../../components/Avatar";
 import { ScreenHeader } from "../../components/ScreenHeader";
@@ -55,6 +56,8 @@ const tagLabels: Record<string, string> = {
 };
 
 export default function CareCircleScreen() {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   const navigation = useNavigation<any>();
   const { user } = useAuth();
   const [members, setMembers] = useState<Member[]>([]);
@@ -418,7 +421,7 @@ export default function CareCircleScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   scrollContent: { padding: spacing.md, paddingBottom: spacing.xxl },
   section: { marginBottom: spacing.lg },

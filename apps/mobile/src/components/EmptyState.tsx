@@ -1,8 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing, typography } from "../theme/tokens";
+import { colors, spacing, typography, ThemeColors } from "../theme/tokens";
 import { Button } from "./Button";
+import { useTheme } from "../context/ThemeContext";
 
 interface EmptyStateProps {
   icon: keyof typeof Ionicons.glyphMap;
@@ -13,6 +14,8 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({ icon, title, message, actionLabel, onAction }: EmptyStateProps) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   return (
     <View style={styles.container}>
       <View style={styles.iconCircle}>
@@ -27,7 +30,7 @@ export function EmptyState({ icon, title, message, actionLabel, onAction }: Empt
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",

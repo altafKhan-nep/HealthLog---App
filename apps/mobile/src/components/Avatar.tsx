@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import { colors, radius, typography } from "../theme/tokens";
+import { colors, radius, typography, ThemeColors } from "../theme/tokens";
+import { useTheme } from "../context/ThemeContext";
 
 interface AvatarProps {
   name: string;
@@ -18,9 +19,10 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
-const bgColors = ["#1B7A8C", "#7C5CBF", "#C9483C", "#2E9E5B", "#D89B2A"];
-
 export function Avatar({ name, size = 48, isYou = false, imageUri }: AvatarProps) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
+  const bgColors = [colors.primary, "#7C5CBF", colors.statusError, colors.statusReady, colors.statusProcessing];
   const bgColor = bgColors[name.length % bgColors.length];
 
   return (
@@ -56,7 +58,7 @@ export function Avatar({ name, size = 48, isYou = false, imageUri }: AvatarProps
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   wrapper: {
     alignItems: "center",
     marginRight: 12,
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   initials: {
-    color: "#FFFFFF",
+    color: colors.textInverse,
     fontWeight: "600",
   },
   label: {

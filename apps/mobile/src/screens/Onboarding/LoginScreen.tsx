@@ -11,13 +11,16 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing, typography } from "../../theme/tokens";
+import { spacing, typography, ThemeColors } from "../../theme/tokens";
+import { useTheme } from "../../context/ThemeContext";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { useAuth } from "../../context/AuthContext";
 
 export default function LoginScreen({ navigation }: any) {
   const { signIn } = useAuth();
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -92,7 +95,7 @@ export default function LoginScreen({ navigation }: any) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,

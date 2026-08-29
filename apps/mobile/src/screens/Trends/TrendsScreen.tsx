@@ -5,7 +5,8 @@ import {
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import Svg, { Path, Circle, Line, Text as SvgText, G } from "react-native-svg";
-import { colors, spacing, typography, radius, shadow } from "../../theme/tokens";
+import { spacing, typography, radius, shadow, ThemeColors } from "../../theme/tokens";
+import { useTheme } from "../../context/ThemeContext";
 import { apiClient } from "../../api/client";
 import { useAuth } from "../../context/AuthContext";
 import { ScreenHeader } from "../../components/ScreenHeader";
@@ -59,6 +60,7 @@ function getTestIcon(testName: string) {
 }
 
 function getStatus(value: number, referenceRange: string): { label: string; color: string; bg: string } {
+  const { colors } = useTheme();
   if (!referenceRange) return { label: "Unknown", color: colors.textSecondary, bg: colors.divider };
   const parts = referenceRange.split("-").map(Number);
   if (parts.length !== 2 || isNaN(parts[0]) || isNaN(parts[1])) return { label: "Unknown", color: colors.textSecondary, bg: colors.divider };
@@ -69,6 +71,8 @@ function getStatus(value: number, referenceRange: string): { label: string; colo
 }
 
 function FullChart({ data, hospitalColors }: { data: TrendPoint[]; hospitalColors: Map<string, string> }) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   const chartWidth = 340;
   const chartHeight = 200;
   const padding = { top: 20, right: 25, bottom: 35, left: 50 };
@@ -165,6 +169,8 @@ function FullChart({ data, hospitalColors }: { data: TrendPoint[]; hospitalColor
 }
 
 export default function TrendsScreen() {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   const navigation = useNavigation<any>();
   const { user } = useAuth();
   const [summaries, setSummaries] = useState<TrendSummary[]>([]);
@@ -413,7 +419,7 @@ export default function TrendsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   scrollContent: { padding: spacing.md, paddingBottom: spacing.xxl },
   detailHeader: {

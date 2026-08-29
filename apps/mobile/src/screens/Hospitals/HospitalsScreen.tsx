@@ -1,10 +1,12 @@
 import React, { useState, useCallback } from "react";
 import {
-  View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView,
+  View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView, Alert,
+  Modal, TextInput, Pressable, ActivityIndicator,
 } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing, typography, shadow, radius } from "../../theme/tokens";
+import { spacing, typography, shadow, radius, ThemeColors } from "../../theme/tokens";
+import { useTheme } from "../../context/ThemeContext";
 import { apiClient } from "../../api/client";
 import { EmptyState } from "../../components/EmptyState";
 import { useAuth } from "../../context/AuthContext";
@@ -18,6 +20,7 @@ interface Hospital {
   type: string;
   visitCount: number;
   lastVisitDate: string;
+  isGlobal?: boolean;
 }
 
 const HOSPITAL_ICONS: Record<string, string> = {
@@ -26,11 +29,17 @@ const HOSPITAL_ICONS: Record<string, string> = {
 };
 
 export default function HospitalsScreen() {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   const navigation = useNavigation<any>();
   const { user } = useAuth();
   const [visitedHospitals, setVisitedHospitals] = useState<Hospital[]>([]);
   const [selectedHospital, setSelectedHospital] = useState<Hospital | null>(null);
   const [hospitalVisits, setHospitalVisits] = useState<any[]>([]);
+  const [editTarget, setEditTarget] = useState<Hospital | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editLocation, setEditLocation] = useState("");
+  const [editSaving, setEditSaving] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -44,6 +53,53 @@ export default function HospitalsScreen() {
       setVisitedHospitals(res.data);
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const confirmDeleteHospital = (hospital: Hospital) => {
+    Alert.alert(
+      "Delete this hospital?",
+      `Are you sure you want to delete "${hospital.name}"? This cannot be undone.`,
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await apiClient.delete(`/api/hospitals/${hospital._id}`);
+              setVisitedHospitals((prev) => prev.filter((h) => h._id !== hospital._id));
+              fetchVisitedHospitals();
+            } catch (err: any) {
+              Alert.alert("Cannot delete", err.response?.data?.error || "Failed to delete hospital");
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const openEdit = (hospital: Hospital) => {
+    setEditTarget(hospital);
+    setEditName(hospital.name);
+    setEditLocation(hospital.location || "");
+  };
+
+  const saveEdit = async () => {
+    if (!editTarget) return;
+    if (!editName.trim()) return;
+    setEditSaving(true);
+    try {
+      await apiClient.put(`/api/hospitals/${editTarget._id}`, {
+        name: editName.trim(),
+        location: editLocation.trim(),
+      });
+      setEditTarget(null);
+      fetchVisitedHospitals();
+    } catch (err: any) {
+      Alert.alert("Error", err.response?.data?.error || "Failed to update hospital");
+    } finally {
+      setEditSaving(false);
     }
   };
 
@@ -192,29 +248,93 @@ export default function HospitalsScreen() {
         ) : (
           visitedHospitals.map((item) => {
             const icon = HOSPITAL_ICONS[item.type] || "business-outline";
+            const isOwned = !item.isGlobal;
             return (
-              <TouchableOpacity key={item._id} style={[styles.card, shadow.sm]} onPress={() => selectHospital(item)}>
-                <View style={styles.cardIcon}>
-                  <Ionicons name={icon as any} size={24} color={colors.primary} />
-                </View>
-                <View style={styles.cardContent}>
-                  <Text style={styles.cardName}>{item.name}</Text>
-                  <Text style={styles.cardMeta}>
-                    <View style={[styles.metaDot, { backgroundColor: colors.primary }]} />
-                    {` ${item.visitCount} Record${item.visitCount !== 1 ? "s" : ""} Stored`}
-                  </Text>
-                </View>
-                <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
-              </TouchableOpacity>
+              <View key={item._id} style={[styles.card, shadow.sm]}>
+                <TouchableOpacity
+                  style={styles.cardMain}
+                  activeOpacity={0.7}
+                  onPress={() => selectHospital(item)}
+                >
+                  <View style={styles.cardIcon}>
+                    <Ionicons name={icon as any} size={24} color={colors.primary} />
+                  </View>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.cardName}>{item.name}</Text>
+                    <Text style={styles.cardMeta}>
+                      <View style={[styles.metaDot, { backgroundColor: colors.primary }]} />
+                      {` ${item.visitCount} Record${item.visitCount !== 1 ? "s" : ""} Stored`}
+                    </Text>
+                  </View>
+                  <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+                </TouchableOpacity>
+                {isOwned && (
+                  <TouchableOpacity
+                    style={styles.cardMenu}
+                    onPress={() => {
+                      Alert.alert(item.name, undefined, [
+                        { text: "Edit", onPress: () => openEdit(item) },
+                        { text: "Delete", style: "destructive", onPress: () => confirmDeleteHospital(item) },
+                        { text: "Cancel", style: "cancel" },
+                      ]);
+                    }}
+                  >
+                    <Ionicons name="ellipsis-vertical" size={20} color={colors.textSecondary} />
+                  </TouchableOpacity>
+                )}
+              </View>
             );
           })
         )}
       </ScrollView>
+
+      <Modal visible={!!editTarget} transparent animationType="fade">
+        <Pressable style={styles.modalOverlay} onPress={() => setEditTarget(null)}>
+          <Pressable style={[styles.modalContent, shadow.lg]} onPress={(e) => e.stopPropagation()}>
+            <View style={styles.modalHeader}>
+              <Ionicons name="business-outline" size={22} color={colors.primary} />
+              <Text style={styles.modalTitle}>Edit Hospital</Text>
+            </View>
+            <Text style={styles.modalLabel}>Name</Text>
+            <TextInput
+              style={styles.input}
+              value={editName}
+              onChangeText={setEditName}
+              placeholder="Hospital name"
+              placeholderTextColor={colors.textSecondary}
+            />
+            <Text style={styles.modalLabel}>Location</Text>
+            <TextInput
+              style={styles.input}
+              value={editLocation}
+              onChangeText={setEditLocation}
+              placeholder="Area, City"
+              placeholderTextColor={colors.textSecondary}
+            />
+            <View style={styles.modalActions}>
+              <TouchableOpacity style={[styles.modalBtn, styles.modalCancel]} onPress={() => setEditTarget(null)}>
+                <Text style={styles.modalCancelText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalBtn, styles.modalSave, !editName.trim() && styles.modalSaveDisabled]}
+                onPress={saveEdit}
+                disabled={!editName.trim() || editSaving}
+              >
+                {editSaving ? (
+                  <ActivityIndicator color="#fff" size="small" />
+                ) : (
+                  <Text style={styles.modalSaveText}>Save</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background, padding: spacing.md },
   header: {
     flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: spacing.md,
@@ -246,7 +366,7 @@ const styles = StyleSheet.create({
   list: { paddingBottom: spacing.xl },
   card: {
     flexDirection: "row", alignItems: "center", backgroundColor: colors.surface,
-    borderRadius: radius.card, padding: spacing.md, marginBottom: spacing.sm,
+    borderRadius: radius.card, marginBottom: spacing.sm,
     borderWidth: 1, borderColor: colors.border,
   },
   cardIcon: {
@@ -321,4 +441,40 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xl,
   },
   addButtonText: { ...typography.button, color: colors.textInverse },
+  cardMain: {
+    flex: 1, flexDirection: "row", alignItems: "center",
+    padding: spacing.md,
+  },
+  cardMenu: {
+    paddingHorizontal: spacing.xs, paddingVertical: spacing.sm,
+    alignItems: "center", justifyContent: "center",
+  },
+  modalOverlay: {
+    flex: 1, backgroundColor: "rgba(0,0,0,0.4)",
+    alignItems: "center", justifyContent: "center", padding: spacing.lg,
+  },
+  modalContent: {
+    width: "100%", maxWidth: 420, backgroundColor: colors.surface,
+    borderRadius: radius.card, padding: spacing.lg,
+  },
+  modalHeader: {
+    flexDirection: "row", alignItems: "center", gap: spacing.sm, marginBottom: spacing.lg,
+  },
+  modalTitle: { ...typography.subheading, color: colors.textPrimary },
+  modalLabel: { ...typography.caption, color: colors.textSecondary, marginBottom: spacing.xs },
+  input: {
+    borderWidth: 1, borderColor: colors.border, borderRadius: radius.sm,
+    padding: spacing.md, fontSize: 16, color: colors.textPrimary,
+    backgroundColor: colors.background, marginBottom: spacing.md,
+  },
+  modalActions: { flexDirection: "row", gap: spacing.sm, marginTop: spacing.sm },
+  modalBtn: {
+    flex: 1, paddingVertical: spacing.md, borderRadius: radius.sm,
+    alignItems: "center", justifyContent: "center",
+  },
+  modalCancel: { backgroundColor: colors.divider },
+  modalCancelText: { ...typography.button, color: colors.textPrimary },
+  modalSave: { backgroundColor: colors.primary },
+  modalSaveDisabled: { opacity: 0.6 },
+  modalSaveText: { ...typography.button, color: colors.textInverse },
 });

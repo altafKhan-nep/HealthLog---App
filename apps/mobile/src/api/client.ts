@@ -3,7 +3,7 @@ import { Platform } from "react-native";
 
 const BASE_URL = Platform.select({
   web: "http://localhost:4000",
-  default: "http://10.100.10.95:4000",
+  default: "http://192.168.254.5:4000",
 });
 
 export const API_BASE_URL = BASE_URL!;

@@ -9,6 +9,7 @@ import {
   getVisit,
   updateVisit,
   deleteVisit,
+  deleteAttachment,
 } from "./visits.controller";
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
@@ -23,5 +24,6 @@ router.put("/:id", updateVisit);
 router.delete("/:id", deleteVisit);
 router.post("/:id/attachments", upload.single("file"), uploadAttachment);
 router.post("/:id/attachments/batch", uploadBatchAttachments);
+router.delete("/:id/attachments/:attIndex", deleteAttachment);
 
 export default router;

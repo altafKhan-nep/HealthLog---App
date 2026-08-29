@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import { ActivityIndicator, View, TouchableOpacity, Text, Image } from "react-native";
+import { ActivityIndicator, View, TouchableOpacity, Text, Image, Linking } from "react-native";
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { colors } from "../theme/tokens";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 
 import WelcomeScreen from "../screens/Onboarding/WelcomeScreen";
 import LoginScreen from "../screens/Onboarding/LoginScreen";
@@ -30,6 +30,7 @@ const RootStack = createNativeStackNavigator();
 const Tabs = createBottomTabNavigator();
 
 function MainTabs() {
+  const { colors } = useTheme();
   return (
     <Tabs.Navigator
       screenOptions={({ route }) => ({
@@ -80,6 +81,7 @@ function MainTabs() {
 }
 
 function AddReportFlow() {
+  const { colors } = useTheme();
   return (
     <AddReportStack.Navigator
       screenOptions={{
@@ -109,8 +111,58 @@ function OnboardingFlow() {
 
 export default function AppNavigator() {
   const { token, isLoading } = useAuth();
+  const { colors } = useTheme();
   const navigationRef = useRef<NavigationContainerRef<any>>(null);
   const prevToken = useRef<string | null>(null);
+  const tokenRef = useRef<string | null>(token);
+  tokenRef.current = token;
+
+  // Parse incoming URLs: healthlog://share/... or https://<host>/share/...
+  const handleDeepLink = useRef((url: string) => {
+    const nav = navigationRef.current;
+    if (!nav) return;
+    let path = url;
+    const scheme = url.split("://")[0]?.toLowerCase();
+    if (scheme !== "healthlog" && scheme !== "http" && scheme !== "https") return;
+    // For http(s), extract path after the host
+    if (scheme === "http" || scheme === "https") {
+      try {
+        const u = new URL(url);
+        path = u.pathname + (u.pathname.endsWith("/") ? "" : "");
+      } catch {
+        return;
+      }
+    } else {
+      path = url.slice("healthlog://".length);
+    }
+
+    if (path.startsWith("/")) path = path.slice(1);
+
+    const reportMatch = path.match(/^share\/report\/([^/?#]+)/);
+    if (reportMatch) {
+      nav.navigate("SharedReport", { token: reportMatch[1] });
+      return;
+    }
+    const circleMatch = path.match(/^share\/circle\/([^/?#]+)/);
+    if (circleMatch) {
+      // Joining still requires auth — open app if logged in, else go to onboarding
+      nav.navigate(tokenRef.current ? "Main" : "Onboarding");
+    }
+  }).current;
+
+  useEffect(() => {
+    const sub = Linking.addEventListener("url", ({ url }) => handleDeepLink(url));
+    return () => sub.remove();
+  }, [handleDeepLink]);
+
+  useEffect(() => {
+    if (isLoading) return;
+    try {
+      Linking.getInitialURL().then((url) => {
+        if (url) handleDeepLink(url);
+      });
+    } catch {}
+  }, [isLoading, handleDeepLink]);
 
   useEffect(() => {
     if (isLoading) return;

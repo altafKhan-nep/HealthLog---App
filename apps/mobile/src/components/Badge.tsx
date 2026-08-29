@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { colors, typography, radius, spacing } from "../theme/tokens";
+import { colors, typography, radius, spacing, ThemeColors } from "../theme/tokens";
+import { useTheme } from "../context/ThemeContext";
 
 type BadgeVariant = "ready" | "processing" | "error" | "tag";
 
@@ -9,14 +10,15 @@ interface BadgeProps {
   label: string;
 }
 
-const config: Record<BadgeVariant, { bg: string; color: string }> = {
-  ready: { bg: colors.statusReadyBg, color: colors.statusReady },
-  processing: { bg: colors.statusProcessingBg, color: colors.statusProcessing },
-  error: { bg: colors.statusErrorBg, color: colors.statusError },
-  tag: { bg: colors.primaryLight, color: colors.primary },
-};
-
 export function Badge({ variant, label }: BadgeProps) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
+  const config: Record<BadgeVariant, { bg: string; color: string }> = {
+    ready: { bg: colors.statusReadyBg, color: colors.statusReady },
+    processing: { bg: colors.statusProcessingBg, color: colors.statusProcessing },
+    error: { bg: colors.statusErrorBg, color: colors.statusError },
+    tag: { bg: colors.primaryLight, color: colors.primary },
+  };
   const c = config[variant];
   return (
     <View style={[styles.badge, { backgroundColor: c.bg }]}>
@@ -25,7 +27,7 @@ export function Badge({ variant, label }: BadgeProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   badge: {
     paddingHorizontal: spacing.sm,
     paddingVertical: 3,

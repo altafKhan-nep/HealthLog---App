@@ -13,6 +13,9 @@ export interface IVisit extends Document {
     fileUrl: string;
     fileType: string;
     cloudinaryPublicId: string;
+    name: string;
+    size: number;
+    createdAt?: Date;
   }>;
   extractedFields: {
     diagnosis: string | null;
@@ -48,6 +51,9 @@ const visitSchema = new Schema<IVisit>(
         fileUrl: { type: String, required: true },
         fileType: { type: String, required: true },
         cloudinaryPublicId: { type: String, required: true },
+        name: { type: String, default: "" },
+        size: { type: Number, default: 0 },
+        createdAt: { type: Date, default: () => new Date() },
       },
     ],
     extractedFields: {

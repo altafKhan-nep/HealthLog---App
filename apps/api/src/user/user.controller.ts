@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { User } from "../auth/auth.model";
 import { AuthedRequest } from "../middleware/requireAuth";
-import { uploadToCloudinary } from "../config/cloudinary";
+import { uploadToCloudinary } from "../careCircle/config/cloudinary";
 
 /** GET /api/user/profile — get current user's profile */
 export async function getProfile(req: AuthedRequest, res: Response) {

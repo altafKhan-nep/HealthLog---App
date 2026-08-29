@@ -19,6 +19,69 @@ export const colors = {
 
   shadow: "rgba(18, 36, 43, 0.08)",
   overlay: "rgba(18, 36, 43, 0.5)",
+
+  darkBackground: "#000000",
+  darkSurface: "#1C1C1E",
+  darkSurfaceAlt: "#2C2C2E",
+  darkBorder: "#3A3A3C",
+  darkText: "#FFFFFF",
+  darkTextSecondary: "#A8A8AD",
+  darkTextMuted: "#6E6E73",
+
+  accentHospital: "#2E7D4F",
+  accentHospitalBg: "#E8F6ED",
+  accentTrend: "#2E7D4F",
+  accentTrendBg: "#E8F6ED",
+  accentCare: "#7B3FA0",
+  accentCareBg: "#F0E8F6",
+};
+
+export const darkColors = {
+  primary: "#37A6BC",
+  primaryDark: "#58C2D6",
+  primaryLight: "#1E3B45",
+  background: "#101418",
+  surface: "#1A2024",
+  textPrimary: "#E8F0F3",
+  textSecondary: "#9AA7AD",
+  textInverse: "#FFFFFF",
+  border: "#2A3238",
+  divider: "#232A30",
+
+  statusReady: "#4CC07A",
+  statusReadyBg: "#1C3329",
+  statusProcessing: "#E0A83A",
+  statusProcessingBg: "#332919",
+  statusError: "#E06A5C",
+  statusErrorBg: "#332021",
+
+  shadow: "rgba(0, 0, 0, 0.4)",
+  overlay: "rgba(0, 0, 0, 0.6)",
+
+  darkBackground: "#000000",
+  darkSurface: "#1C1C1E",
+  darkSurfaceAlt: "#2C2C2E",
+  darkBorder: "#3A3A3C",
+  darkText: "#FFFFFF",
+  darkTextSecondary: "#A8A8AD",
+  darkTextMuted: "#6E6E73",
+
+  accentHospital: "#5BDA8F",
+  accentHospitalBg: "#1C3329",
+  accentTrend: "#5BDA8F",
+  accentTrendBg: "#1C3329",
+  accentCare: "#B78AF0",
+  accentCareBg: "#2A2140",
+};
+
+export type ThemeMode = "light" | "dark" | "system" | "auto";
+export type ThemeColors = typeof colors;
+
+export const brand = {
+  primary: "#1B7A8C",
+  primaryDark: "#125A67",
+  light: "#E8F4F6",
+  textOnBrand: "#EAF4F6",
 };
 
 export const spacing = {

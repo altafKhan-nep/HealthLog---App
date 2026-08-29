@@ -6,7 +6,8 @@ import {
   ActivityIndicator,
   ViewStyle,
 } from "react-native";
-import { colors, spacing, radius, typography } from "../theme/tokens";
+import { colors, spacing, radius, typography, ThemeColors } from "../theme/tokens";
+import { useTheme } from "../context/ThemeContext";
 
 interface ButtonProps {
   title: string;
@@ -25,6 +26,8 @@ export function Button({
   loading = false,
   style,
 }: ButtonProps) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   const isPrimary = variant === "primary";
   const isGhost = variant === "ghost";
   const isOutline = variant === "outline";
@@ -64,7 +67,7 @@ export function Button({
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   base: {
     paddingVertical: 16,
     paddingHorizontal: spacing.lg,

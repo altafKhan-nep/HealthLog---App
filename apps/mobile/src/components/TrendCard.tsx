@@ -2,7 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Svg, { Path, Circle } from "react-native-svg";
-import { colors, spacing, typography, radius, shadow } from "../theme/tokens";
+import { colors, spacing, typography, radius, shadow, ThemeColors } from "../theme/tokens";
+import { useTheme } from "../context/ThemeContext";
 
 interface TrendCardProps {
   icon: string;
@@ -16,13 +17,7 @@ interface TrendCardProps {
   onPress?: () => void;
 }
 
-const STATUS_CONFIG = {
-  normal: { color: colors.statusReady, bg: colors.statusReadyBg },
-  high: { color: colors.statusError, bg: colors.statusErrorBg },
-  low: { color: "#D89B2A", bg: "#FDF3E0" },
-};
-
-function MiniSparkline({ data, color }: { data: number[]; color: string }) {
+function MiniSparkline({ data, color, styles }: { data: number[]; color: string; styles: any }) {
   if (data.length < 2) return <View style={styles.sparklineEmpty} />;
   const w = 100;
   const h = 40;
@@ -55,6 +50,13 @@ export function TrendCard({
   sparklineData,
   onPress,
 }: TrendCardProps) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
+  const STATUS_CONFIG = {
+    normal: { color: colors.statusReady, bg: colors.statusReadyBg },
+    high: { color: colors.statusError, bg: colors.statusErrorBg },
+    low: { color: colors.statusProcessing, bg: colors.statusProcessingBg },
+  };
   const statusConfig = STATUS_CONFIG[statusType];
 
   return (
@@ -77,13 +79,13 @@ export function TrendCard({
           <Text style={[styles.value, { color: statusConfig.color }]}>{value}</Text>
           <Text style={styles.unit}>{unit} {subtitle}</Text>
         </View>
-        <MiniSparkline data={sparklineData} color={statusConfig.color} />
+        <MiniSparkline data={sparklineData} color={statusConfig.color} styles={styles} />
       </View>
     </TouchableOpacity>
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   card: {
     backgroundColor: colors.surface,
     borderRadius: radius.card,

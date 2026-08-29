@@ -55,6 +55,53 @@ export async function createHospital(req: AuthedRequest, res: Response) {
   }
 }
 
+/** PUT /api/hospitals/:id — update a user-owned (non-global) hospital */
+export async function updateHospital(req: AuthedRequest, res: Response) {
+  try {
+    const hospital = await Hospital.findOne({ _id: req.params.id, userId: req.userId, isGlobal: false });
+    if (!hospital) return res.status(404).json({ error: "Hospital not found" });
+
+    const { name, type, location } = req.body;
+
+    if (name && name.trim() !== hospital.name) {
+      const dup = await Hospital.findOne({ userId: req.userId, name: name.trim(), _id: { $ne: hospital._id } });
+      if (dup) return res.status(409).json({ error: "You already have a hospital with that name" });
+    }
+
+    if (name) hospital.name = name.trim();
+    if (location !== undefined) hospital.location = location;
+    if (type) hospital.type = type;
+
+    await hospital.save();
+    return res.json(hospital);
+  } catch (err: any) {
+    if (err.code === 11000) return res.status(409).json({ error: "You already have a hospital with that name" });
+    console.error("[hospitals] update error:", err);
+    return res.status(500).json({ error: "Failed to update hospital" });
+  }
+}
+
+/** DELETE /api/hospitals/:id — delete a user-owned hospital (blocked if it has visits) */
+export async function deleteHospital(req: AuthedRequest, res: Response) {
+  try {
+    const hospital = await Hospital.findOne({ _id: req.params.id, userId: req.userId, isGlobal: false });
+    if (!hospital) return res.status(404).json({ error: "Hospital not found" });
+
+    const visitCount = await Visit.countDocuments({ userId: req.userId, hospitalId: hospital._id });
+    if (visitCount > 0) {
+      return res.status(409).json({
+        error: `This hospital has ${visitCount} visit${visitCount > 1 ? "s" : ""} attached. Delete or move those visits first.`,
+      });
+    }
+
+    await Hospital.findByIdAndDelete(hospital._id);
+    return res.json({ message: "Hospital deleted" });
+  } catch (err) {
+    console.error("[hospitals] delete error:", err);
+    return res.status(500).json({ error: "Failed to delete hospital" });
+  }
+}
+
 /** GET /api/hospitals/:id — get hospital detail */
 export async function getHospital(req: AuthedRequest, res: Response) {
   try {

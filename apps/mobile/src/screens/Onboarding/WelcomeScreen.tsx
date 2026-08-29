@@ -1,17 +1,18 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing, typography, radius } from "../../theme/tokens";
+import { spacing, typography, radius, ThemeColors } from "../../theme/tokens";
+import { useTheme } from "../../context/ThemeContext";
 import { Button } from "../../components/Button";
 
 export default function WelcomeScreen({ navigation }: any) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <View style={styles.iconCircle}>
-          <Ionicons name="heart-outline" size={48} color={colors.primary} />
-        </View>
+        <Image source={require("../../../assets/logo.png")} style={styles.logo} resizeMode="contain" />
         <Text style={styles.title}>HealthLog</Text>
         <Text style={styles.tagline}>Your health history, organized</Text>
 
@@ -48,7 +49,7 @@ export default function WelcomeScreen({ navigation }: any) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
@@ -59,13 +60,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: spacing.xl,
   },
-  iconCircle: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: colors.primaryLight,
-    alignItems: "center",
-    justifyContent: "center",
+  logo: {
+    width: 160,
+    height: 160,
     marginBottom: spacing.lg,
   },
   title: {

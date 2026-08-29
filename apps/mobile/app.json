@@ -7,23 +7,35 @@
     "orientation": "portrait",
     "scheme": "healthlog",
     "userInterfaceStyle": "light",
+    "icon": "./assets/logo.png",
     "splash": {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
       "backgroundColor": "#F4F8FA"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "web": {
-      "bundler": "metro"
+      "bundler": "metro",
+      "favicon": "./assets/logo.png"
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.healthlog.app"
+      "bundleIdentifier": "com.healthlog.app",
+      "icon": "./assets/logo.png"
     },
     "android": {
       "adaptiveIcon": {
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#F4F8FA"
       },
       "package": "com.healthlog.app",
-      "usesCleartextTraffic": true
-    }
+      "usesCleartextTraffic": true,
+      "icon": "./assets/logo.png"
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, Alert, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing, typography, radius, shadow } from "../../theme/tokens";
+import { spacing, typography, radius, shadow, ThemeColors } from "../../theme/tokens";
+import { useTheme } from "../../context/ThemeContext";
 import { apiClient } from "../../api/client";
 import { Button } from "../../components/Button";
 import { ProgressBar } from "../../components/ProgressBar";
@@ -21,9 +22,12 @@ interface FileItem {
   base64: string | null;
   name: string | null;
   type: "image" | "pdf";
+  size: number;
 }
 
 export default function Step5Confirm({ navigation, route }: any) {
+  const { colors } = useTheme();
+  const styles = makeStyles(colors);
   const { visitData } = route.params;
   const [saving, setSaving] = useState(false);
   const [selectedTag, setSelectedTag] = useState<string>(visitData?.tag || "other");
@@ -50,6 +54,8 @@ export default function Step5Confirm({ navigation, route }: any) {
           .map((f) => ({
             imageBase64: f.base64,
             mimeType: f.type === "pdf" ? "application/pdf" : "image/jpeg",
+            name: f.name || undefined,
+            size: f.size || undefined,
           }));
         if (batchFiles.length > 0) {
           await apiClient.post(`/api/visits/${visitId}/attachments/batch`, { files: batchFiles });
@@ -140,7 +146,7 @@ export default function Step5Confirm({ navigation, route }: any) {
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors: ThemeColors) => StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   content: { padding: spacing.md, paddingBottom: spacing.xxl },
   title: { ...typography.heading, color: colors.textPrimary, marginBottom: spacing.lg },
