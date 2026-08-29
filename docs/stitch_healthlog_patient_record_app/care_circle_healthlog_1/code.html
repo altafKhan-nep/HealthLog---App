@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Care Circle - HealthLog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#3a4a49",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#576867",
+                        "outline-variant": "#bec8cb",
+                        "secondary-fixed-dim": "#b8cac9",
+                        "on-surface-variant": "#3e484b",
+                        "on-primary-fixed": "#001f26",
+                        "on-tertiary-fixed-variant": "#6c3a01",
+                        "inverse-surface": "#2e3131",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#0e1e1e",
+                        "secondary-container": "#d4e6e5",
+                        "secondary": "#516161",
+                        "primary-fixed": "#a8edff",
+                        "surface-bright": "#f8fafa",
+                        "surface-container-high": "#e6e8e9",
+                        "on-primary-container": "#cdf4ff",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e1e3e3",
+                        "surface-tint": "#006878",
+                        "tertiary-container": "#985e25",
+                        "tertiary-fixed": "#ffdcc1",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#2e1500",
+                        "secondary-fixed": "#d4e6e5",
+                        "tertiary": "#7b460e",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#004e5b",
+                        "primary-container": "#0e7688",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#d8dada",
+                        "on-tertiary-container": "#ffeadb",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#eceeee",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#80d3e6",
+                        "inverse-on-surface": "#eff1f1",
+                        "primary-fixed-dim": "#80d3e6",
+                        "surface-container-highest": "#e1e3e3",
+                        "primary": "#005c6b",
+                        "on-surface": "#191c1d",
+                        "surface-container-low": "#f2f4f4",
+                        "surface": "#f8fafa",
+                        "on-background": "#191c1d",
+                        "outline": "#6f797c",
+                        "tertiary-fixed-dim": "#ffb779",
+                        "background": "#f8fafa"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "stack-sm": "12px",
+                        "stack-md": "24px",
+                        "base": "8px",
+                        "gutter-card": "16px",
+                        "margin-mobile": "20px",
+                        "stack-lg": "40px"
+                    },
+                    fontFamily: {
+                        "headline-md": ["Atkinson Hyperlegible Next"],
+                        "label-sm": ["Atkinson Hyperlegible Next"],
+                        "body-lg": ["Atkinson Hyperlegible Next"],
+                        "label-md": ["Atkinson Hyperlegible Next"],
+                        "body-md": ["Atkinson Hyperlegible Next"],
+                        "headline-lg": ["Atkinson Hyperlegible Next"]
+                    },
+                    fontSize: {
+                        "headline-md": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "label-sm": ["12px", { lineHeight: "16px", fontWeight: "500" }],
+                        "body-lg": ["18px", { lineHeight: "26px", fontWeight: "400" }],
+                        "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.02em", fontWeight: "600" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "headline-lg": ["24px", { lineHeight: "32px", fontWeight: "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { -webkit-tap-highlight-color: transparent; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col font-body-md pb-[80px]">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-background z-40">
+<div class="flex items-center justify-between px-margin-mobile h-16 w-full max-w-md mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-variant flex-shrink-0">
+<img alt="User Profile Photo" class="w-full h-full object-cover" data-alt="A professional studio portrait of an older man with gray hair, smiling warmly. He is wearing a light blue button-down shirt. The lighting is soft and natural, creating a trustworthy and approachable mood against a clean, light-mode background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1_Vo3bM34oeMxLObROa3rNaDwAjdrpfYqF6QoRoBOj6L-KKAGwXjSFflijHS0zdyhgN8ktqcGakQqf3fMp9J-5eckrPys3LjDCySxzr_FAIsWPNk8VnygVH6wn8_MRZ5hgV_xM2xsRqtflBHAUGPuUUcB_-j62fkcOerLEWjkTK77iGb0tNU2U_cM6fpL_VQdnD6Hui7LhXEdeEDvSEvYS_WhA46aIZmBAuypofJUmEWg7ic8yo0R"/>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary">Care Circle</h1>
+</div>
+<button aria-label="notifications" class="text-on-surface-variant hover:opacity-80 transition-opacity duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-md mx-auto px-margin-mobile pt-stack-sm pb-stack-lg flex flex-col gap-stack-md">
+<!-- Header Section with Icon -->
+<div class="flex flex-col items-center justify-center py-stack-md text-center">
+<div class="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mb-stack-sm shadow-[0px_4px_12px_rgba(0,0,0,0.05)]">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">group</span>
+</div>
+<p class="text-on-surface-variant font-body-md max-w-[280px]">
+                Manage who has access to view and update your health records.
+            </p>
+</div>
+<!-- Care Circle List -->
+<section class="flex flex-col gap-stack-sm">
+<h2 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Active Members</h2>
+<!-- List Item 1 -->
+<article class="bg-surface rounded-xl p-gutter-card flex items-center gap-4 shadow-[0px_4px_12px_rgba(0,0,0,0.05)]">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-variant flex-shrink-0">
+<img alt="Dr. Sarah Smith" class="w-full h-full object-cover" data-alt="A professional headshot of a female doctor wearing a white coat over a light blue top. She is smiling confidently. The lighting is bright and clinical but warm, set against a pristine white medical office background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO9yW9hYXEIbhR546DDvbBoSVR0blFZFjsJ_2A1HDroJzW26yRBiHKjnHNeu4sYSRakV1DpINC-X7PwbkfG65j2HNhQTqGeNKgcMB-P2We0keBSAQ8gisRtND61xKDuw8NW-0ozMEUPKZCKbw7feAw-vYaUpytp2hN0dtXnW7itvYLaBx5fl7acCcaPOXARLIkXIPw2_iVgIjRUhc_e1ohOXmHd5hNXUXOPgdNVQBhjzN9o0FwrsY9"/>
+</div>
+<div class="flex-grow">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface">Dr. Sarah Smith</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Primary Care Physician</p>
+</div>
+<button aria-label="Manage Access" class="flex items-center justify-center w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-xl">lock</span>
+</button>
+</article>
+<!-- List Item 2 -->
+<article class="bg-surface rounded-xl p-gutter-card flex items-center gap-4 shadow-[0px_4px_12px_rgba(0,0,0,0.05)]">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-variant flex-shrink-0">
+<img alt="Emily (Daughter)" class="w-full h-full object-cover" data-alt="A casual portrait of a young woman in her 30s with brown hair, smiling warmly outdoors. The background is a soft, out-of-focus park setting with gentle daylight, creating a familial and caring mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALN6EwG3c0VVbrarA7jKPbLLn_fW36sX1YLKKW0EBvvJ4tykvY3FDacJCg4MtvDY09QuLyvHyavGZfgn07XT3E6PYBivU9x0j5Xlw_B0d1sF--V7qD9Rd_4KoPoQIPcjwhW7g7lTGHtU0hXUtEN3zBkidC8jJD24B7WL-nGcArgLlneVXcu_W32sK2jsGbxo1VZIbRHBSz7yGAiY7tBkS7U849QeSxWJ2fAQGjJi6R2HmObJ-ND5rx"/>
+</div>
+<div class="flex-grow">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface">Emily Chen</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Daughter (Emergency Contact)</p>
+</div>
+<button aria-label="Manage Access" class="flex items-center justify-center w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-xl">lock</span>
+</button>
+</article>
+</section>
+<!-- Invite Section -->
+<section class="mt-stack-sm flex flex-col gap-3">
+<button class="w-full h-12 rounded-xl bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center gap-2 shadow-[0px_4px_12px_rgba(0,0,0,0.1)] hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-xl">person_add</span>
+                Add to Circle
+            </button>
+<div class="flex items-center justify-center gap-2 mt-4 text-outline">
+<span class="material-symbols-outlined text-sm">shield</span>
+<span class="font-label-sm text-label-sm">Your data is secure and encrypted.</span>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 rounded-t-xl shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] bg-surface md:hidden pb-safe">
+<div class="flex justify-around items-center px-4 py-2 w-full max-w-md mx-auto">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-variant rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-variant rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined">cloud_download</span>
+<span class="font-label-sm text-label-sm mt-1">Hospitals</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-variant rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="font-label-sm text-label-sm mt-1">Trends</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-95 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-label-sm text-label-sm mt-1">Care Circle</span>
+</a>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>HealthLog - Trends</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap');
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#d4e6e5",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f8fafa",
+                        "on-secondary-fixed-variant": "#3a4a49",
+                        "tertiary": "#7b460e",
+                        "on-error-container": "#93000a",
+                        "outline": "#6f797c",
+                        "on-primary-fixed": "#001f26",
+                        "primary-container": "#0e7688",
+                        "secondary": "#516161",
+                        "on-secondary-container": "#576867",
+                        "surface-dim": "#d8dada",
+                        "on-primary-container": "#cdf4ff",
+                        "on-background": "#191c1d",
+                        "surface-container-high": "#e6e8e9",
+                        "tertiary-fixed-dim": "#ffb779",
+                        "surface-variant": "#e1e3e3",
+                        "on-tertiary-fixed": "#2e1500",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "background": "#f8fafa",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#eff1f1",
+                        "surface": "#f8fafa",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#ffdcc1",
+                        "outline-variant": "#bec8cb",
+                        "surface-container-highest": "#e1e3e3",
+                        "inverse-surface": "#2e3131",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f2f4f4",
+                        "primary": "#005c6b",
+                        "surface-tint": "#006878",
+                        "on-surface-variant": "#3e484b",
+                        "secondary-fixed": "#d4e6e5",
+                        "primary-fixed-dim": "#80d3e6",
+                        "secondary-fixed-dim": "#b8cac9",
+                        "tertiary-container": "#985e25",
+                        "on-surface": "#191c1d",
+                        "on-tertiary-container": "#ffeadb",
+                        "primary-fixed": "#a8edff",
+                        "on-tertiary-fixed-variant": "#6c3a01",
+                        "on-secondary-fixed": "#0e1e1e",
+                        "on-primary-fixed-variant": "#004e5b",
+                        "inverse-primary": "#80d3e6",
+                        "surface-container": "#eceeee",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "12px",
+                        "stack-lg": "40px",
+                        "stack-md": "24px",
+                        "base": "8px",
+                        "gutter-card": "16px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Atkinson Hyperlegible Next"],
+                        "headline-md": ["Atkinson Hyperlegible Next"],
+                        "label-sm": ["Atkinson Hyperlegible Next"],
+                        "body-md": ["Atkinson Hyperlegible Next"],
+                        "headline-lg": ["Atkinson Hyperlegible Next"],
+                        "body-lg": ["Atkinson Hyperlegible Next"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "26px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased pb-24 md:pb-0 h-screen overflow-hidden flex flex-col md:flex-row font-body-md">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-background dark:bg-background z-40 hidden md:flex items-center justify-between px-margin-mobile h-16 max-w-md mx-auto flat no shadows transition-opacity duration-200 shadow-sm md:shadow-none md:border-b md:border-outline-variant">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high shrink-0">
+<img alt="User Profile Photo" class="w-full h-full object-cover" data-alt="A small, professional headshot of a person looking friendly and approachable. The lighting is soft and natural, emphasizing a warm and trustworthy demeanor. The background is a clean, neutral gray tone that matches the modern corporate clinical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbOIi-MlUedVrsnwbqRlIJXNRsCW7xs7N8WjIh35WuKqLxCsVyaja-N6xR0n47IkcJILGwnXt99O0Iwp79alTb56k6SFSl2OEltDLX0zQjCMXTJCjCpj8KU9GQ4hhiDim9ZwehLcIiDzFVpCloWQJKbdhTpa2jdgWecBvq80IiBtswq6-WvV9_LCsWy5WP_x85BtNQabwGNrk8a2mJa7sMj6RiFFveXpt-AyRKDSoDGuMi-xIItfZ3"/>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary dark:text-primary-fixed-dim">HealthLog</h1>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+</header>
+<!-- Main Nav Desktop (SideNav simulation) -->
+<nav class="hidden md:flex flex-col w-64 h-full bg-surface-container-low border-r border-outline-variant px-4 py-8 gap-stack-sm shrink-0 shadow-sm">
+<h2 class="font-headline-lg text-headline-lg text-primary px-4 mb-8">HealthLog</h2>
+<a class="flex items-center gap-4 px-4 py-3 rounded-full text-on-surface-variant hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-full text-on-surface-variant hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">cloud_download</span>
+<span class="font-label-md text-label-md">Hospitals</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-full bg-secondary-container text-on-secondary-container transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<span class="font-label-md text-label-md">Trends</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-full text-on-surface-variant hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Care Circle</span>
+</a>
+</nav>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto w-full max-w-2xl mx-auto md:p-8">
+<!-- Mobile Header -->
+<header class="md:hidden flex items-center justify-between px-margin-mobile pt-6 pb-4 bg-background sticky top-0 z-30">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold tracking-tight">Trends</h1>
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high shrink-0">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A small, professional headshot of a person looking friendly and approachable. The lighting is soft and natural, emphasizing a warm and trustworthy demeanor. The background is a clean, neutral gray tone that matches the modern corporate clinical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY2fv_0TmzVXT5HgAddGRvCLxsZATnH0O2YaS2LCnmAyG-iHPF0p2Ob0vtA6j78NnpkKyc1YEKkvcSLvNoRW6EOkEx8fiGxckT32mGHnmWyi70sNMzvrUn4VYKBfOOGVw-TVym8h4N2FrtRmv7U09LMEu5rrShI0xj39w47wOV8vjeU992ezCJtssWKS4ScSro1XIghG8GSch1dnf0DFcBoqnuTk21SQH4ifWGk8CcvfvfKUu-7I3b"/>
+</div>
+</header>
+<div class="px-margin-mobile md:px-0 space-y-stack-lg pb-12">
+<!-- Metric Selector -->
+<section class="mt-4 md:mt-0">
+<label class="block font-label-md text-label-md text-on-surface mb-stack-sm" for="metric-select">Select Metric</label>
+<div class="relative">
+<select class="block w-full rounded-xl border border-outline bg-surface px-4 py-3 pr-10 font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none appearance-none cursor-pointer transition-colors shadow-sm" id="metric-select">
+<option selected="" value="cholesterol">Cholesterol</option>
+<option value="blood-pressure">Blood Pressure</option>
+<option value="glucose">Blood Glucose</option>
+<option value="weight">Weight</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-on-surface-variant">
+<span class="material-symbols-outlined">arrow_drop_down</span>
+</div>
+</div>
+</section>
+<!-- Empty State Graph Area -->
+<section class="bg-surface rounded-2xl p-gutter-card md:p-8 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] flex flex-col items-center text-center border border-surface-container-high relative overflow-hidden group">
+<!-- Subtle decorative background blob -->
+<div class="absolute inset-0 opacity-20 pointer-events-none flex justify-center items-center">
+<div class="w-48 h-48 rounded-full bg-primary-container blur-3xl transform scale-150 transition-transform duration-1000 group-hover:scale-175"></div>
+</div>
+<div class="w-32 h-32 md:w-40 md:h-40 mb-6 bg-surface-container-low rounded-full flex items-center justify-center relative z-10 shadow-sm border border-surface-container-high">
+<span class="material-symbols-outlined text-6xl text-primary-fixed-dim" style="font-variation-settings: 'FILL' 0, 'wght' 200;">bar_chart</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2 relative z-10">More Data Needed</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-sm mx-auto relative z-10">
+                    Trend will appear once there's more than one reading. You have <strong class="text-on-surface font-semibold">1 reading</strong> for Cholesterol recorded on <strong class="text-on-surface font-semibold">Sep 12</strong>.
+                </p>
+<button class="mt-8 bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-full shadow-[0px_4px_12px_rgba(0,0,0,0.1)] hover:opacity-90 active:scale-95 transition-all flex items-center gap-2 relative z-10">
+<span class="material-symbols-outlined">add</span>
+                    Add Reading
+                </button>
+</section>
+<!-- Recent Readings List -->
+<section>
+<div class="flex items-center justify-between mb-stack-sm">
+<h3 class="font-label-md text-label-md text-on-surface">Recent Readings</h3>
+<button class="font-label-sm text-label-sm text-primary hover:underline">View All</button>
+</div>
+<div class="bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-surface-container-high overflow-hidden">
+<div class="p-gutter-card flex items-center gap-4 hover:bg-surface-bright transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center shrink-0 text-on-secondary-container transition-transform group-hover:scale-105">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bloodtype</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-headline-md text-headline-md text-on-surface truncate">190 <span class="font-body-md text-body-md text-on-surface-variant">mg/dL</span></p>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Westside Clinic</p>
+</div>
+<div class="text-right shrink-0">
+<p class="font-label-md text-label-md text-on-surface">Sep 12</p>
+<div class="flex items-center gap-1 justify-end mt-1">
+<div class="w-2 h-2 rounded-full bg-[#e6b300]"></div> <!-- Warning yellow, acceptable arbitrary for status -->
+<span class="font-label-sm text-label-sm text-on-surface-variant">Borderline</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] bg-surface dark:bg-surface-container-low fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-variant dark:hover:bg-on-surface-variant active:scale-95 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:text-primary transition-colors">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-variant dark:hover:bg-on-surface-variant active:scale-95 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:text-primary transition-colors">cloud_download</span>
+<span class="font-label-sm text-label-sm">Hospitals</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full px-4 py-1 hover:bg-surface-variant dark:hover:bg-on-surface-variant active:scale-95 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<span class="font-label-sm text-label-sm">Trends</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-variant dark:hover:bg-on-surface-variant active:scale-95 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:text-primary transition-colors">group</span>
+<span class="font-label-sm text-label-sm">Care Circle</span>
+</a>
+</nav>
+<!-- Safe area padding for bottom nav on iOS -->
+<style>
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
+    </style>
+</body></html>

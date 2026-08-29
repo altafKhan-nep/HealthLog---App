@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Add Report - Step 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Atkinson Hyperlegible Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#f8fafa",
+                        "surface-container": "#eceeee",
+                        "primary-fixed": "#a8edff",
+                        "primary-container": "#0e7688",
+                        "inverse-on-surface": "#eff1f1",
+                        "on-surface": "#191c1d",
+                        "background": "#f8fafa",
+                        "surface": "#f8fafa",
+                        "on-background": "#191c1d",
+                        "inverse-surface": "#2e3131",
+                        "surface-container-high": "#e6e8e9",
+                        "surface-container-low": "#f2f4f4",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#7b460e",
+                        "outline": "#6f797c",
+                        "on-secondary-container": "#576867",
+                        "secondary-fixed-dim": "#b8cac9",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e1e3e3",
+                        "inverse-primary": "#80d3e6",
+                        "on-primary-fixed-variant": "#004e5b",
+                        "on-tertiary-fixed-variant": "#6c3a01",
+                        "on-tertiary-container": "#ffeadb",
+                        "on-secondary-fixed": "#0e1e1e",
+                        "on-primary-fixed": "#001f26",
+                        "outline-variant": "#bec8cb",
+                        "primary-fixed-dim": "#80d3e6",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#006878",
+                        "secondary-container": "#d4e6e5",
+                        "surface-dim": "#d8dada",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#2e1500",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#3a4a49",
+                        "surface-variant": "#e1e3e3",
+                        "secondary-fixed": "#d4e6e5",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#3e484b",
+                        "on-primary-container": "#cdf4ff",
+                        "primary": "#005c6b",
+                        "tertiary-container": "#985e25",
+                        "tertiary-fixed-dim": "#ffb779",
+                        "tertiary-fixed": "#ffdcc1",
+                        "secondary": "#516161",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "40px",
+                        "stack-md": "24px",
+                        "base": "8px",
+                        "margin-mobile": "20px",
+                        "stack-sm": "12px",
+                        "gutter-card": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Atkinson Hyperlegible Next"],
+                        "headline-md": ["Atkinson Hyperlegible Next"],
+                        "body-lg": ["Atkinson Hyperlegible Next"],
+                        "label-sm": ["Atkinson Hyperlegible Next"],
+                        "body-md": ["Atkinson Hyperlegible Next"],
+                        "label-md": ["Atkinson Hyperlegible Next"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Atkinson Hyperlegible Next', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased pb-safe">
+<!-- Top App Bar (Suppressed because this is a transactional flow, but keeping a simple close action) -->
+<header class="w-full flex items-center justify-between px-margin-mobile h-16 max-w-md mx-auto relative z-10 bg-background">
+<button class="p-2 -ml-2 text-on-surface-variant hover:opacity-80 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-primary rounded-full">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<span class="font-label-md text-label-md text-on-surface-variant">Step 2 of 5</span>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-md mx-auto px-margin-mobile pt-stack-sm pb-[120px] relative z-0 flex flex-col">
+<!-- Progress Bar -->
+<div class="w-full h-1 bg-surface-container-high rounded-full mb-stack-md overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-500 ease-in-out w-[40%]"></div>
+</div>
+<!-- Section Title -->
+<div class="mb-stack-lg">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-background mb-1">
+                Which doctor did you see?
+            </h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                (optional)
+            </p>
+</div>
+<!-- Input Section -->
+<div class="flex flex-col gap-stack-sm mb-stack-lg">
+<div class="relative w-full">
+<span class="absolute inset-y-0 left-0 flex items-center pl-4 text-on-surface-variant pointer-events-none">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</span>
+<input class="w-full pl-12 pr-4 h-12 bg-surface border border-outline-variant rounded-lg font-body-md text-body-md text-on-background placeholder:text-on-surface-variant focus:outline-none focus:ring-0 focus:border-2 focus:border-primary transition-all duration-200" id="doctorSearch" placeholder="Search doctor name..." type="text"/>
+</div>
+<button class="self-start mt-2">
+<span class="font-label-md text-label-md text-primary hover:text-primary-container transition-colors duration-200 underline decoration-1 underline-offset-4">
+                     Skip this step
+                 </span>
+</button>
+</div>
+<!-- Recent Doctors Suggestion Area -->
+<div class="flex flex-col gap-stack-sm">
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">RECENTLY VISITED</p>
+<div class="flex flex-wrap gap-2">
+<button class="flex items-center gap-2 bg-surface-container-low border border-outline-variant hover:bg-surface-container-high hover:border-primary text-on-background rounded-full px-4 py-2 transition-all duration-200 group">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary transition-colors" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Dr. Sarah Smith</span>
+</button>
+<button class="flex items-center gap-2 bg-surface-container-low border border-outline-variant hover:bg-surface-container-high hover:border-primary text-on-background rounded-full px-4 py-2 transition-all duration-200 group">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary transition-colors" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Dr. James Wilson</span>
+</button>
+<button class="flex items-center gap-2 bg-surface-container-low border border-outline-variant hover:bg-surface-container-high hover:border-primary text-on-background rounded-full px-4 py-2 transition-all duration-200 group">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary transition-colors" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Dr. Elena Rossi</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Sticky Footer Actions -->
+<div class="fixed bottom-0 left-0 w-full bg-background/90 backdrop-blur-md border-t border-surface-container-highest z-50">
+<div class="max-w-md mx-auto px-margin-mobile py-4 flex gap-4">
+<button class="flex-1 h-12 bg-secondary-container text-on-secondary-container font-label-md text-label-md rounded-lg flex items-center justify-center hover:opacity-90 active:scale-95 transition-all duration-200">
+                Back
+            </button>
+<button class="flex-[2] h-12 bg-primary text-on-primary font-label-md text-label-md rounded-lg flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 shadow-[0px_4px_12px_rgba(0,92,107,0.2)] transition-all duration-200">
+                Next Step
+                <span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

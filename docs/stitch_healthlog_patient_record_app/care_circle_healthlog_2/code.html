@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Care Circle</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-container": "#0e7688",
+                    "tertiary-fixed-dim": "#ffb779",
+                    "on-surface-variant": "#3e484b",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#d4e6e5",
+                    "inverse-on-surface": "#eff1f1",
+                    "background": "#f8fafa",
+                    "primary-fixed": "#a8edff",
+                    "surface-dim": "#d8dada",
+                    "primary-fixed-dim": "#80d3e6",
+                    "secondary-container": "#d4e6e5",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#e6e8e9",
+                    "inverse-primary": "#80d3e6",
+                    "on-primary-container": "#cdf4ff",
+                    "on-primary-fixed-variant": "#004e5b",
+                    "on-background": "#191c1d",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#985e25",
+                    "on-secondary-container": "#576867",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed": "#ffdcc1",
+                    "secondary-fixed-dim": "#b8cac9",
+                    "on-secondary-fixed": "#0e1e1e",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#3a4a49",
+                    "inverse-surface": "#2e3131",
+                    "outline": "#6f797c",
+                    "on-tertiary-fixed-variant": "#6c3a01",
+                    "surface-container-highest": "#e1e3e3",
+                    "outline-variant": "#bec8cb",
+                    "on-tertiary": "#ffffff",
+                    "surface-container": "#eceeee",
+                    "surface-tint": "#006878",
+                    "on-tertiary-container": "#ffeadb",
+                    "on-tertiary-fixed": "#2e1500",
+                    "surface-variant": "#e1e3e3",
+                    "tertiary": "#7b460e",
+                    "on-surface": "#191c1d",
+                    "primary": "#005c6b",
+                    "surface-bright": "#f8fafa",
+                    "surface-container-low": "#f2f4f4",
+                    "surface": "#f8fafa",
+                    "on-primary-fixed": "#001f26",
+                    "secondary": "#516161",
+                    "on-secondary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "40px",
+                    "gutter-card": "16px",
+                    "stack-sm": "12px",
+                    "stack-md": "24px",
+                    "base": "8px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Atkinson Hyperlegible Next"],
+                    "label-md": ["Atkinson Hyperlegible Next"],
+                    "body-md": ["Atkinson Hyperlegible Next"],
+                    "label-sm": ["Atkinson Hyperlegible Next"],
+                    "headline-md": ["Atkinson Hyperlegible Next"],
+                    "body-lg": ["Atkinson Hyperlegible Next"]
+            },
+            "fontSize": {
+                    "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}]
+            }
+          },
+        }
+      }
+    </script>
+<style>
+        body { font-family: 'Atkinson Hyperlegible Next', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Hide scrollbar for avatar row */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface dark:bg-surface-dim flat no shadows z-40">
+<div class="flex items-center justify-between px-margin-mobile h-16 w-full">
+<button class="text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors active:scale-95 transition-transform p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="healing">healing</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">Care Circle</h1>
+<div class="w-10"></div> <!-- Placeholder for balance -->
+</div>
+</header>
+<main class="w-full max-w-2xl mx-auto">
+<!-- Care Circle Avatars -->
+<section class="mt-4 px-margin-mobile">
+<div class="flex overflow-x-auto gap-4 no-scrollbar pb-4 items-center">
+<!-- Avatar: You -->
+<div class="flex flex-col items-center gap-2 flex-shrink-0 cursor-pointer active:scale-95 transition-transform">
+<div class="w-16 h-16 rounded-full border-2 border-transparent relative overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a young adult looking forward with a warm, reassuring smile in a well-lit modern medical setting. Soft minimalist aesthetic with a clean white and soft teal background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJfb0KkUaq4sqxJECIYAm_bYTuxHedB1LSQYMqqi85Eyedu-KtUGJhjg_ntvst9UjuPws_IrzjEs2Jp4_tdMYZpAkS0gg0moJXo9JyitSJzg6q12h4z3P8RbgTXR6BIRbOmFWXR2z_fbS6eNk7sp8c82Ws_yx680x9Pm01NIucpC-n79oQNF_thS9gOj7TqMTgOQpym5nqHWthA16yqN4tlzIOcZWlxgO7Z84KkIN1V18_MWGg4OKU"/>
+</div>
+<span class="font-label-md text-label-md text-on-surface">You</span>
+</div>
+<!-- Avatar: Mom (Active) -->
+<div class="flex flex-col items-center gap-2 flex-shrink-0 cursor-pointer active:scale-95 transition-transform">
+<div class="w-16 h-16 rounded-full border-2 border-primary relative overflow-hidden bg-surface-container-highest shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A gentle, reassuring portrait of an older woman with a kind expression. Soft, warm lighting typical of a high-end health app. The background is a clean, minimal gradient of soft greys and white." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMuxme6TyEAXK5J6ZjjSE8XKXR6VRhBASfm7ARArG3oSw2kH88fSPvC19zZB4b_1E8UsPCrcId7Wa1fDt1AjoctSEo0Kidf6WmkiTJCHNof2o3ZFrJsj14XXlzpX32GPjuCH7MJ-AdrThzq57NHHcjQwLCVABvFrpBeJI4tfBrzY9BqftuVsiqrk6K0o9K05M6tlQ0KBei5ZwLVOExqs6Ia04M6D3nwPRWe9XtkHt9bpvCmAqOLcPY"/>
+</div>
+<span class="font-label-md text-label-md text-primary font-bold">Mom</span>
+</div>
+<!-- Avatar: Dad -->
+<div class="flex flex-col items-center gap-2 flex-shrink-0 cursor-pointer active:scale-95 transition-transform opacity-70">
+<div class="w-16 h-16 rounded-full border-2 border-transparent relative overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A portrait of an older man with grey hair, looking calm and relaxed. Modern clinical lighting, soft shadows, exuding a sense of safety and professional care. Minimalist background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK-2gi4-E9EhhdU9NNWBAs8n9xJcwStUN-v4OG3AkDKfABvzCOIyZoZmz8Wfefp0nXlOy0nZeL6cOyrl2NDpa54i7iAiCqGzQJ8z2oHM9bWuzVL7UJjhbuQeKb_gVZVM2QTRhRII3B7M6P339-C0kQmpXsN0bpDqVL-dieG3NcbhXaac9mxYqc8Z113-YP2RuKfRkQmrtuFsFncsTMrLSwKsWBffOIbcBwnNrKOTVqptdTbo9K3DOP"/>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Dad</span>
+</div>
+<!-- Add Button -->
+<div class="flex flex-col items-center gap-2 flex-shrink-0 cursor-pointer active:scale-95 transition-transform">
+<button class="w-16 h-16 rounded-full border border-dashed border-outline-variant bg-surface-container-low flex items-center justify-center text-primary hover:bg-secondary-container transition-colors">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+<span class="font-label-md text-label-md text-on-surface-variant">Add</span>
+</div>
+</div>
+</section>
+<!-- Viewing Banner -->
+<section class="px-margin-mobile mt-2 mb-stack-md">
+<div class="bg-secondary-container text-on-secondary-container rounded-lg p-3 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+<p class="font-body-md text-body-md flex-1">Viewing: <strong>Mom's</strong> health record</p>
+<button class="text-primary hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</section>
+<!-- Timeline Section -->
+<section class="px-margin-mobile relative">
+<!-- Timeline vertical line -->
+<div class="absolute left-[36px] top-4 bottom-0 w-[2px] bg-surface-container-highest -z-10"></div>
+<h2 class="font-headline-md text-headline-md text-on-background mb-stack-sm ml-10">Recent Visits</h2>
+<!-- Card 1 -->
+<div class="relative pl-10 mb-stack-sm">
+<!-- Timeline Dot -->
+<div class="absolute left-[-11px] top-6 w-4 h-4 rounded-full bg-primary border-4 border-surface"></div>
+<div class="bg-surface rounded-xl p-gutter-card shadow-[0_4px_12px_rgba(0,0,0,0.05)] border border-surface-variant/50 relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between mb-2">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded-md">Oct 24, 2023</span>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="medical_information">medical_information</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">Cardiology Consult</h3>
+<div class="flex flex-col gap-1 mt-3">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="local_hospital">local_hospital</span>
+<span class="font-body-md text-body-md">City General Hospital</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="stethoscope">stethoscope</span>
+<span class="font-body-md text-body-md">Dr. Sarah Jenkins</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="relative pl-10 mb-stack-sm">
+<!-- Timeline Dot -->
+<div class="absolute left-[-11px] top-6 w-4 h-4 rounded-full bg-secondary-fixed-dim border-4 border-surface"></div>
+<div class="bg-surface rounded-xl p-gutter-card shadow-[0_4px_12px_rgba(0,0,0,0.05)] border border-surface-variant/50 relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between mb-2">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded-md">Aug 15, 2023</span>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="vaccines">vaccines</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">Annual Physical</h3>
+<div class="flex flex-col gap-1 mt-3">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="local_hospital">local_hospital</span>
+<span class="font-body-md text-body-md">North Hills Medical</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="stethoscope">stethoscope</span>
+<span class="font-body-md text-body-md">Dr. Michael Chen</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-surface-container dark:bg-inverse-surface shadow-md z-50 md:hidden">
+<!-- Home (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-secondary-container dark:text-on-secondary-fixed-variant hover:bg-secondary-container dark:hover:bg-secondary-fixed-dim transition-colors rounded-xl px-4 py-1 active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<!-- Records (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-secondary-container dark:text-on-secondary-fixed-variant hover:bg-secondary-container dark:hover:bg-secondary-fixed-dim transition-colors rounded-xl px-4 py-1 active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label-sm text-label-sm mt-1">Records</span>
+</a>
+<!-- Circle (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-full px-4 py-1 active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="family_restroom" data-weight="fill">family_restroom</span>
+<span class="font-label-sm text-label-sm mt-1">Circle</span>
+</a>
+</nav>
+</body></html>

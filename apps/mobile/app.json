@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "HealthLog",
+    "slug": "healthlog",
+    "version": "0.1.0",
+    "sdkVersion": "54.0.0",
+    "orientation": "portrait",
+    "scheme": "healthlog",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#F4F8FA"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "web": {
+      "bundler": "metro"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.healthlog.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#F4F8FA"
+      },
+      "package": "com.healthlog.app",
+      "usesCleartextTraffic": true
+    }
+  }
+}

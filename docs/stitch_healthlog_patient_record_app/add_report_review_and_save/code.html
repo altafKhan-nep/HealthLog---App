@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Review and Save - HealthLog</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-highest": "#e1e3e3",
+                      "surface-bright": "#f8fafa",
+                      "primary-fixed-dim": "#80d3e6",
+                      "on-tertiary-fixed-variant": "#6c3a01",
+                      "on-surface-variant": "#3e484b",
+                      "on-background": "#191c1d",
+                      "error": "#ba1a1a",
+                      "on-secondary": "#ffffff",
+                      "surface": "#f8fafa",
+                      "primary-container": "#0e7688",
+                      "primary": "#005c6b",
+                      "surface-variant": "#e1e3e3",
+                      "on-secondary-fixed": "#0e1e1e",
+                      "tertiary-fixed": "#ffdcc1",
+                      "outline": "#6f797c",
+                      "on-primary-fixed-variant": "#004e5b",
+                      "tertiary": "#7b460e",
+                      "primary-fixed": "#a8edff",
+                      "on-secondary-container": "#576867",
+                      "on-error": "#ffffff",
+                      "surface-container-low": "#f2f4f4",
+                      "on-tertiary-container": "#ffeadb",
+                      "inverse-primary": "#80d3e6",
+                      "secondary-container": "#d4e6e5",
+                      "on-secondary-fixed-variant": "#3a4a49",
+                      "tertiary-container": "#985e25",
+                      "surface-container-high": "#e6e8e9",
+                      "inverse-surface": "#2e3131",
+                      "secondary-fixed-dim": "#b8cac9",
+                      "secondary-fixed": "#d4e6e5",
+                      "secondary": "#516161",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-fixed": "#001f26",
+                      "surface-tint": "#006878",
+                      "background": "#f8fafa",
+                      "error-container": "#ffdad6",
+                      "on-surface": "#191c1d",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-fixed": "#2e1500",
+                      "surface-dim": "#d8dada",
+                      "outline-variant": "#bec8cb",
+                      "surface-container": "#eceeee",
+                      "on-primary-container": "#cdf4ff",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#ffb779",
+                      "inverse-on-surface": "#eff1f1",
+                      "surface-container-lowest": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-lg": "40px",
+                      "base": "8px",
+                      "stack-md": "24px",
+                      "margin-mobile": "20px",
+                      "gutter-card": "16px",
+                      "stack-sm": "12px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Atkinson Hyperlegible Next"],
+                      "body-lg": ["Atkinson Hyperlegible Next"],
+                      "label-md": ["Atkinson Hyperlegible Next"],
+                      "body-md": ["Atkinson Hyperlegible Next"],
+                      "headline-md": ["Atkinson Hyperlegible Next"],
+                      "headline-lg": ["Atkinson Hyperlegible Next"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body { font-family: 'Atkinson Hyperlegible Next', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface flex items-center justify-between px-margin-mobile py-base z-10">
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-2 active:scale-95 duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-primary">HealthLog</h1>
+</div>
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-2 active:scale-95 duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</header>
+<!-- Main Content Canvas (Linear/Transactional Flow) -->
+<main class="flex-grow flex flex-col px-margin-mobile pt-stack-sm pb-stack-lg max-w-2xl mx-auto w-full">
+<!-- Header & Progress -->
+<div class="mb-stack-md">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">Review and save</h2>
+<!-- Progress Indicator (Step 5 of 5) -->
+<div class="flex items-center gap-2 mb-2">
+<div class="flex-1 h-2 rounded-full bg-primary overflow-hidden"></div>
+<div class="flex-1 h-2 rounded-full bg-primary overflow-hidden"></div>
+<div class="flex-1 h-2 rounded-full bg-primary overflow-hidden"></div>
+<div class="flex-1 h-2 rounded-full bg-primary overflow-hidden"></div>
+<div class="flex-1 h-2 rounded-full bg-primary overflow-hidden"></div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant text-right">Step 5 of 5</p>
+</div>
+<!-- Summary Card -->
+<div class="bg-surface-container-low rounded-xl p-gutter-card mb-stack-lg shadow-[0_4px_12px_rgba(0,0,0,0.05)] border border-surface-container-high">
+<div class="flex flex-col divide-y divide-surface-container-high">
+<!-- Row 1: Hospital -->
+<div class="py-stack-sm flex items-start justify-between first:pt-0">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5" data-icon="local_hospital">local_hospital</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Facility</p>
+<p class="font-body-md text-body-md text-on-surface">City General Hospital</p>
+</div>
+</div>
+<button class="font-label-md text-label-md text-primary hover:text-primary-container transition-colors p-1">Edit</button>
+</div>
+<!-- Row 2: Doctor -->
+<div class="py-stack-sm flex items-start justify-between">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5" data-icon="stethoscope">stethoscope</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Provider</p>
+<p class="font-body-md text-body-md text-on-surface">Dr. Sarah Smith</p>
+</div>
+</div>
+<button class="font-label-md text-label-md text-primary hover:text-primary-container transition-colors p-1">Edit</button>
+</div>
+<!-- Row 3: Date -->
+<div class="py-stack-sm flex items-start justify-between">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5" data-icon="calendar_today">calendar_today</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Date of Service</p>
+<p class="font-body-md text-body-md text-on-surface">October 17, 2023</p>
+</div>
+</div>
+<button class="font-label-md text-label-md text-primary hover:text-primary-container transition-colors p-1">Edit</button>
+</div>
+<!-- Row 4: Photo -->
+<div class="py-stack-sm flex items-start justify-between last:pb-0">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5" data-icon="image">image</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-2">Attached Document</p>
+<div class="w-20 h-20 rounded-lg overflow-hidden border border-surface-container-high bg-surface-container-lowest flex items-center justify-center">
+<img alt="Document thumbnail" class="w-full h-full object-cover opacity-80" data-alt="A clean, professional macro photograph of a generic medical document sitting on a light gray clinical desk. The lighting is bright and even, casting soft shadows, creating a pristine and trustworthy healthcare aesthetic in a modern clinic environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvp50PyHpVZsWzXWdcwJFLk8Md7c9inMEPcIfYr9lBexvHKbqzkK5vMQVMKY-SvrM1OwMGtTPoivXrsrf25t2kXIA-XUw9evg6wPQrEJ5OovH4cvep_9J8hD0CyGucrVLn2fZ7SedIqGXiy4xj0Aro4NxEW5yu94MN5ReyrP8PcwnTDh8CWMBjSduIX0cWLThWMXPwj1X7y2tnJFqcKsVk2CjLDub5L_Zgn3EnlwDHtYrUct4BSxna"/>
+</div>
+</div>
+</div>
+<button class="font-label-md text-label-md text-primary hover:text-primary-container transition-colors p-1">Edit</button>
+</div>
+</div>
+</div>
+<!-- Spacer to push actions to bottom if needed -->
+<div class="flex-grow"></div>
+<!-- Bottom Actions -->
+<div class="flex flex-col items-center gap-stack-sm mt-stack-md pt-stack-md">
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+                Back
+            </button>
+<button class="w-full h-12 bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md rounded-full shadow-sm hover:shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                Save Report
+            </button>
+</div>
+</main>
+<!-- Navigation Shell suppressed due to Linear/Transactional intent (Step 5 of 5) -->
+</body></html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>HealthLog - Visit Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#0e1e1e",
+                    "on-tertiary-container": "#ffeadb",
+                    "surface-dim": "#d8dada",
+                    "on-tertiary-fixed": "#2e1500",
+                    "surface-container": "#eceeee",
+                    "on-secondary-fixed-variant": "#3a4a49",
+                    "tertiary-fixed": "#ffdcc1",
+                    "outline": "#6f797c",
+                    "tertiary-container": "#985e25",
+                    "on-secondary-container": "#576867",
+                    "background": "#f8fafa",
+                    "on-tertiary-fixed-variant": "#6c3a01",
+                    "inverse-primary": "#80d3e6",
+                    "tertiary-fixed-dim": "#ffb779",
+                    "outline-variant": "#bec8cb",
+                    "on-background": "#191c1d",
+                    "surface-variant": "#e1e3e3",
+                    "surface": "#f8fafa",
+                    "inverse-on-surface": "#eff1f1",
+                    "error-container": "#ffdad6",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-container-low": "#f2f4f4",
+                    "tertiary": "#7b460e",
+                    "primary-fixed": "#a8edff",
+                    "surface-container-high": "#e6e8e9",
+                    "primary-fixed-dim": "#80d3e6",
+                    "surface-container-highest": "#e1e3e3",
+                    "on-primary-container": "#cdf4ff",
+                    "on-surface": "#191c1d",
+                    "on-surface-variant": "#3e484b",
+                    "surface-bright": "#f8fafa",
+                    "secondary-fixed": "#d4e6e5",
+                    "primary-container": "#0e7688",
+                    "on-primary-fixed": "#001f26",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#d4e6e5",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-tint": "#006878",
+                    "on-primary-fixed-variant": "#004e5b",
+                    "on-secondary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#2e3131",
+                    "secondary-fixed-dim": "#b8cac9",
+                    "primary": "#005c6b",
+                    "secondary": "#516161"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter-card": "16px",
+                    "stack-lg": "40px",
+                    "base": "8px",
+                    "stack-md": "24px",
+                    "margin-mobile": "20px",
+                    "stack-sm": "12px"
+            },
+            "fontFamily": {
+                    "label-sm": [
+                            "Atkinson Hyperlegible", "sans-serif"
+                    ],
+                    "headline-md": [
+                            "Atkinson Hyperlegible", "sans-serif"
+                    ],
+                    "body-lg": [
+                            "Atkinson Hyperlegible", "sans-serif"
+                    ],
+                    "label-md": [
+                            "Atkinson Hyperlegible", "sans-serif"
+                    ],
+                    "body-md": [
+                            "Atkinson Hyperlegible", "sans-serif"
+                    ],
+                    "headline-lg": [
+                            "Atkinson Hyperlegible", "sans-serif"
+                    ]
+            },
+            "fontSize": {
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-md": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "26px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+          },
+        }
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased w-full min-h-screen flex flex-col items-center">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface flex items-center justify-between px-margin-mobile py-base z-40 transition-colors">
+<button class="p-2 -ml-2 rounded-full hover:bg-surface-container-low active:scale-95 duration-150 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tight">HealthLog</h1>
+<button class="p-2 -mr-2 rounded-full hover:bg-surface-container-low active:scale-95 duration-150 text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</header>
+<main class="w-full max-w-2xl px-margin-mobile py-stack-md flex-1 flex flex-col gap-stack-lg">
+<!-- Header Section -->
+<section class="flex flex-col gap-stack-sm">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-background mb-1">City General Hospital</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">October 17, 2023</p>
+</div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-md text-label-md">Reviewed</span>
+</div>
+</div>
+</section>
+<!-- What this report means -->
+<section>
+<div class="bg-primary-fixed rounded-xl p-gutter-card shadow-[0_4px_12px_rgba(0,0,0,0.05)] border border-primary-fixed-dim/30">
+<div class="flex items-center gap-2 mb-3 text-on-primary-fixed">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<h3 class="font-headline-md text-headline-md">What this report means</h3>
+</div>
+<p class="font-body-md text-body-md text-on-primary-fixed-variant leading-relaxed">
+                    Your blood work shows normal levels for most metrics. Your Vitamin D is slightly low, which explains the fatigue you mentioned. The doctor suggests a daily supplement.
+                </p>
+</div>
+</section>
+<!-- Extracted Results -->
+<section class="flex flex-col gap-stack-sm">
+<h3 class="font-headline-md text-headline-md text-on-background">Extracted Results</h3>
+<div class="bg-surface rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 overflow-hidden">
+<!-- List Item 1 -->
+<div class="flex items-center p-gutter-card border-b border-outline-variant/20 last:border-0">
+<div class="w-10 h-10 rounded-full bg-error-container text-on-error-container flex items-center justify-center mr-4 shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="water_drop">water_drop</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-md text-label-md text-on-background">Vitamin D</span>
+<span class="font-body-lg text-body-lg font-bold text-error">18 ng/mL</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-label-sm text-label-sm">Ref: 30-100 ng/mL</span>
+<span class="font-label-sm text-label-sm bg-error-container text-on-error-container px-2 py-0.5 rounded-full">Low</span>
+</div>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="flex items-center p-gutter-card border-b border-outline-variant/20 last:border-0">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mr-4 shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="water_drop">water_drop</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-md text-label-md text-on-background">Hemoglobin</span>
+<span class="font-body-lg text-body-lg font-bold text-on-background">14.2 g/dL</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-label-sm text-label-sm">Ref: 13.5-17.5 g/dL</span>
+<span class="font-label-sm text-label-sm bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant">Normal</span>
+</div>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="flex items-center p-gutter-card border-b border-outline-variant/20 last:border-0">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mr-4 shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="water_drop">water_drop</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-md text-label-md text-on-background">Glucose</span>
+<span class="font-body-lg text-body-lg font-bold text-on-background">92 mg/dL</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-label-sm text-label-sm">Ref: 70-99 mg/dL</span>
+<span class="font-label-sm text-label-sm bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant">Normal</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Attached Documents -->
+<section class="flex flex-col gap-stack-sm mb-stack-lg">
+<h3 class="font-headline-md text-headline-md text-on-background">Attached Documents</h3>
+<div class="grid grid-cols-2 gap-4">
+<button class="relative aspect-[3/4] rounded-xl overflow-hidden border border-outline-variant/30 shadow-[0_4px_12px_rgba(0,0,0,0.05)] active:scale-95 transition-transform duration-200 group">
+<div class="absolute inset-0 bg-surface-container-low group-hover:bg-black/10 transition-colors z-10 flex items-center justify-center">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-[32px] opacity-0 group-hover:opacity-100 bg-surface/80 p-2 rounded-full" data-icon="zoom_in">zoom_in</span>
+</div>
+<!-- Using placeholder as instructed if image was provided, but none in user prompt, using a structural placeholder -->
+<div class="w-full h-full bg-surface-container flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[48px] mb-2 opacity-50" data-icon="description">description</span>
+<span class="font-label-sm text-label-sm opacity-70">Lab_Results.pdf</span>
+</div>
+</button>
+</div>
+</section>
+<!-- Action Button -->
+<section class="mt-auto pt-stack-md flex justify-center w-full">
+<button class="w-full md:w-auto min-h-[48px] px-8 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-secondary-fixed-dim transition-colors shadow-sm active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="ios_share">ios_share</span>
+                Share this report
+            </button>
+</section>
+</main>
+<!-- BottomNavBar (Suppressed as this is a detail/task-focused screen, adhering to "Shell Visibility & Relevance: Task-Focused" mandate) -->
+<!-- Navigation intentionally omitted per instructions for screens with a "Back" action -->
+</body></html>

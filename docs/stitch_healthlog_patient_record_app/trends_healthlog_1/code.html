@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HealthLog - My Trends</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#3a4a49",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#576867",
+                        "outline-variant": "#bec8cb",
+                        "secondary-fixed-dim": "#b8cac9",
+                        "on-surface-variant": "#3e484b",
+                        "on-primary-fixed": "#001f26",
+                        "on-tertiary-fixed-variant": "#6c3a01",
+                        "inverse-surface": "#2e3131",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#0e1e1e",
+                        "secondary-container": "#d4e6e5",
+                        "secondary": "#516161",
+                        "primary-fixed": "#a8edff",
+                        "surface-bright": "#f8fafa",
+                        "surface-container-high": "#e6e8e9",
+                        "on-primary-container": "#cdf4ff",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e1e3e3",
+                        "surface-tint": "#006878",
+                        "tertiary-container": "#985e25",
+                        "tertiary-fixed": "#ffdcc1",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#2e1500",
+                        "secondary-fixed": "#d4e6e5",
+                        "tertiary": "#7b460e",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#004e5b",
+                        "primary-container": "#0e7688",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#d8dada",
+                        "on-tertiary-container": "#ffeadb",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#eceeee",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#80d3e6",
+                        "inverse-on-surface": "#eff1f1",
+                        "primary-fixed-dim": "#80d3e6",
+                        "surface-container-highest": "#e1e3e3",
+                        "primary": "#005c6b",
+                        "on-surface": "#191c1d",
+                        "surface-container-low": "#f2f4f4",
+                        "surface": "#f8fafa",
+                        "on-background": "#191c1d",
+                        "outline": "#6f797c",
+                        "tertiary-fixed-dim": "#ffb779",
+                        "background": "#f8fafa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "12px",
+                        "stack-md": "24px",
+                        "base": "8px",
+                        "gutter-card": "16px",
+                        "margin-mobile": "20px",
+                        "stack-lg": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Atkinson Hyperlegible Next"],
+                        "label-sm": ["Atkinson Hyperlegible Next"],
+                        "body-lg": ["Atkinson Hyperlegible Next"],
+                        "label-md": ["Atkinson Hyperlegible Next"],
+                        "body-md": ["Atkinson Hyperlegible Next"],
+                        "headline-lg": ["Atkinson Hyperlegible Next"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "26px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Base styles mapping missing config classes requested by JSON */
+        .font-headline-lg-mobile { font-family: 'Atkinson Hyperlegible Next', sans-serif; font-weight: 700; }
+        .text-headline-lg-mobile { font-size: 24px; line-height: 32px; }
+        
+        /* Sparkline animation */
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+        .sparkline-path {
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: drawLine 1.5s ease-out forwards;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-background flex items-center justify-between px-margin-mobile h-16 max-w-md mx-auto z-40">
+<div class="flex items-center justify-center w-10 h-10 rounded-full overflow-hidden border border-outline-variant bg-surface-container hover:opacity-80 transition-opacity duration-200">
+<img alt="User Profile Photo" class="w-full h-full object-cover" data-alt="A professional headshot of an elderly person with a warm, reassuring smile, well-lit in a modern, clean environment reflecting a clinical-but-warm aesthetic. High quality, soft lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAer7hLS6lG-HikKdRQ6Efrz_V6IUdND3irJMIQkQkq6JaVi4EszFKCfhVJXik_9STDr0Mo7VtcZQ12mAcd_Ib5htLdzNm3jzp5wG2OEmG9mlFqspnaqMKvKwS3SSV3gU3n0XekaQBWfkgmpsbubb7IHPM5wyXzBtFUScbhnY0Hai7j0gayesCP02TiLpMM1N_N5Dg7a13ssX9K_wOkAGEFoFjHPwR0BI0TUq6Vm-VVTVQfjhmgn7g9"/>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight">HealthLog</h1>
+<button aria-label="notifications" class="flex items-center justify-center w-10 h-10 text-on-surface-variant hover:opacity-80 transition-opacity duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="w-full max-w-md mx-auto px-margin-mobile pt-stack-md pb-[100px]">
+<!-- Page Title -->
+<div class="flex items-center gap-3 mb-stack-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">My Trends</h2>
+</div>
+<!-- Metric Cards Container -->
+<div class="flex flex-col gap-[20px]">
+<!-- Card 1: Blood Pressure -->
+<article class="bg-surface rounded-xl p-gutter-card shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 flex flex-col gap-stack-sm relative overflow-hidden group hover:shadow-[0px_8px_24px_rgba(0,0,0,0.08)] transition-shadow duration-300">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+<h3 class="font-label-md text-label-md">Blood Pressure</h3>
+</div>
+<!-- Status Chip: Semantic Color Exception applied -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#e6f4ea] text-[#137333]">
+<div class="w-1.5 h-1.5 rounded-full bg-[#137333]"></div>
+<span class="font-label-sm text-label-sm">Normal</span>
+</div>
+</div>
+<div class="flex items-end justify-between mt-2">
+<div>
+<div class="font-headline-lg text-headline-lg text-primary">120/80</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-1">mmHg • Latest</div>
+</div>
+<!-- Sparkline -->
+<div class="w-24 h-12">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 100 40">
+<path class="text-primary sparkline-path" d="M0,30 L20,32 L40,15 L60,25 L80,10 L100,20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<circle class="fill-primary" cx="100" cy="20" r="3"></circle>
+</svg>
+</div>
+</div>
+</article>
+<!-- Card 2: Glucose Level -->
+<article class="bg-surface rounded-xl p-gutter-card shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 flex flex-col gap-stack-sm relative overflow-hidden group hover:shadow-[0px_8px_24px_rgba(0,0,0,0.08)] transition-shadow duration-300">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">water_drop</span>
+<h3 class="font-label-md text-label-md">Glucose Level</h3>
+</div>
+<!-- Status Chip: Out of Range / Error -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container text-on-error-container">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+<span class="font-label-sm text-label-sm">High</span>
+</div>
+</div>
+<div class="flex items-end justify-between mt-2">
+<div>
+<div class="font-headline-lg text-headline-lg text-error">145</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-1">mg/dL • Fasting</div>
+</div>
+<!-- Sparkline -->
+<div class="w-24 h-12">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 100 40">
+<path class="text-error sparkline-path" d="M0,25 L20,22 L40,20 L60,15 L80,10 L100,5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<circle class="fill-error" cx="100" cy="5" r="3"></circle>
+</svg>
+</div>
+</div>
+</article>
+<!-- Card 3: Resting Heart Rate -->
+<article class="bg-surface rounded-xl p-gutter-card shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant/30 flex flex-col gap-stack-sm relative overflow-hidden group hover:shadow-[0px_8px_24px_rgba(0,0,0,0.08)] transition-shadow duration-300">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">ecg_heart</span>
+<h3 class="font-label-md text-label-md">Resting HR</h3>
+</div>
+<!-- Status Chip: Semantic Color Exception applied -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#e6f4ea] text-[#137333]">
+<div class="w-1.5 h-1.5 rounded-full bg-[#137333]"></div>
+<span class="font-label-sm text-label-sm">Normal</span>
+</div>
+</div>
+<div class="flex items-end justify-between mt-2">
+<div>
+<div class="font-headline-lg text-headline-lg text-primary">68</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-1">bpm • Avg 7d</div>
+</div>
+<!-- Sparkline -->
+<div class="w-24 h-12">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 100 40">
+<path class="text-primary sparkline-path" d="M0,20 L15,18 L30,22 L45,19 L60,21 L75,17 L100,20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<circle class="fill-primary" cx="100" cy="20" r="3"></circle>
+</svg>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] bg-surface rounded-t-xl z-50 md:hidden">
+<!-- Home: Inactive -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-variant transition-all duration-200 active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<!-- Hospitals: Inactive -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-variant transition-all duration-200 active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined mb-1">cloud_download</span>
+<span class="font-label-sm text-label-sm">Hospitals</span>
+</a>
+<!-- Trends: Active -->
+<a aria-current="page" class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 hover:bg-surface-variant transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<span class="font-label-sm text-label-sm font-semibold">Trends</span>
+</a>
+<!-- Care Circle: Inactive -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-variant transition-all duration-200 active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined mb-1">group</span>
+<span class="font-label-sm text-label-sm">Care Circle</span>
+</a>
+</nav>
+</body></html>

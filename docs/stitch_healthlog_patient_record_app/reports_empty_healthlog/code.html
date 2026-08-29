@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>HealthLog - Reports Empty State</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Atkinson Hyperlegible Next -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config injected from system -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f8fafa",
+                    "on-tertiary-container": "#ffeadb",
+                    "on-surface": "#191c1d",
+                    "primary-container": "#0e7688",
+                    "tertiary-fixed-dim": "#ffb779",
+                    "inverse-primary": "#80d3e6",
+                    "tertiary": "#7b460e",
+                    "inverse-on-surface": "#eff1f1",
+                    "on-background": "#191c1d",
+                    "on-error": "#ffffff",
+                    "outline": "#6f797c",
+                    "surface-variant": "#e1e3e3",
+                    "surface-bright": "#f8fafa",
+                    "primary-fixed-dim": "#80d3e6",
+                    "secondary": "#516161",
+                    "surface-container-highest": "#e1e3e3",
+                    "outline-variant": "#bec8cb",
+                    "on-secondary-fixed": "#0e1e1e",
+                    "on-secondary-container": "#576867",
+                    "tertiary-container": "#985e25",
+                    "on-secondary-fixed-variant": "#3a4a49",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#d8dada",
+                    "secondary-fixed-dim": "#b8cac9",
+                    "surface-container-low": "#f2f4f4",
+                    "background": "#f8fafa",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#004e5b",
+                    "tertiary-fixed": "#ffdcc1",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#001f26",
+                    "secondary-container": "#d4e6e5",
+                    "primary": "#005c6b",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#006878",
+                    "on-primary-container": "#cdf4ff",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#d4e6e5",
+                    "on-tertiary-fixed": "#2e1500",
+                    "surface-container": "#eceeee",
+                    "inverse-surface": "#2e3131",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#6c3a01",
+                    "primary-fixed": "#a8edff",
+                    "on-surface-variant": "#3e484b",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#e6e8e9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "12px",
+                    "gutter-card": "16px",
+                    "stack-md": "24px",
+                    "base": "8px",
+                    "stack-lg": "40px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "label-sm": [
+                            "Atkinson Hyperlegible Next"
+                    ],
+                    "body-lg": [
+                            "Atkinson Hyperlegible Next"
+                    ],
+                    "headline-md": [
+                            "Atkinson Hyperlegible Next"
+                    ],
+                    "label-md": [
+                            "Atkinson Hyperlegible Next"
+                    ],
+                    "headline-lg": [
+                            "Atkinson Hyperlegible Next"
+                    ],
+                    "body-md": [
+                            "Atkinson Hyperlegible Next"
+                    ]
+            },
+            "fontSize": {
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "26px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-md": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+        },
+        }
+      }
+    </script>
+<style>
+        /* Fallback mapping for un-prefixed styles just in case, though we rely on tailwind classes mostly */
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        
+        .material-symbols-outlined.fill {
+           font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Smooth fade-in animation for main content */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background h-full flex flex-col font-body-md antialiased md:max-w-md md:mx-auto relative">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-background dark:bg-background transition-opacity duration-200 z-40 shadow-sm shadow-[rgba(0,0,0,0.02)]">
+<div class="flex items-center justify-between px-margin-mobile h-16 w-full max-w-md mx-auto">
+<!-- Leading Avatar -->
+<button class="w-10 h-10 rounded-full overflow-hidden hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+<img alt="User Profile Photo" class="object-cover w-full h-full" data-alt="A softly lit, warm and inviting headshot portrait of a smiling young adult against a clean, light clinical backdrop. The image utilizes soft natural lighting, a gentle depth of field, and aligns with a professional yet modern medical interface style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmD9e2YCDiAWkz6U20Cnh8WoEv_DbZFiuGco-jvSNf3bCbSHbcdcLiXJkB2ILzXbM28Hewm1m2J4G_c1DvCS-Idhphe31k1R6WPmRSjY-oCYaLViWB78ehO7T1uOarA3Qc8gsDZ4F2FwcynduJ6UH1UQBKOFv7BZtWhq0CV2uA3Z2vAbdePx56otVp6o_GF9lwV4LRw2bHNXUoqSddBT1w0PnV3UGf1JLCHOIBD42AEwgGHfFjzLs_"/>
+</button>
+<!-- Headline -->
+<h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tight">HealthLog</h1>
+<!-- Trailing Icon -->
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:opacity-80 rounded-full focus:outline-none focus:ring-2 focus:ring-primary">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto px-margin-mobile pb-[100px] pt-stack-sm flex flex-col z-10 animate-fade-in">
+<!-- Search and Filter Bar -->
+<div class="w-full flex items-center gap-stack-sm mb-stack-md mt-base">
+<div class="relative flex-1 opacity-60">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-3 border border-outline-variant rounded-xl leading-5 bg-surface-container-low text-on-surface-variant placeholder-outline focus:outline-none focus:ring-0 sm:text-sm cursor-not-allowed font-body-md shadow-[0px_4px_12px_rgba(0,0,0,0.02)]" disabled="" placeholder="Search reports..." type="text"/>
+</div>
+<button class="h-12 w-12 flex items-center justify-center rounded-xl border border-outline-variant bg-surface text-on-surface hover:bg-surface-variant transition-colors shadow-[0px_4px_12px_rgba(0,0,0,0.05)] opacity-60 cursor-not-allowed" disabled="">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+</div>
+<!-- Empty State Container -->
+<div class="flex-1 flex flex-col items-center justify-center text-center py-stack-lg max-w-sm mx-auto w-full">
+<!-- Illustration -->
+<div class="w-64 h-64 mb-stack-md relative bg-surface-container-low rounded-3xl overflow-hidden shadow-[0px_4px_12px_rgba(0,0,0,0.03)] flex items-center justify-center border border-outline-variant border-opacity-30">
+<img alt="Empty reports illustration" class="object-cover w-full h-full opacity-80" data-alt="A warm, minimalist 3D illustration of an empty medical file folder or a stack of blank clinical records softly floating against a clean, light gray background. The aesthetic is friendly, modern, and uncluttered, using soft lighting and gentle shadows, conveying a sense of calm organization typical of high-end, user-friendly medical apps." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXSTqe5XssirNPlDhi4Bz3RCROwwQsuCj7zMC3TaC80sNT-oKPwE2an9huoz8_tyOoN6qS1XLG7cBWjPhDSFmpFGVirs-QocwVXA1yKByypFBNKZrXvRQOLDDdtmMIlKDHDufiGbd_YRmdXFK6nvjKj6hW4vsEii2yfOynmxyhibP5UlR64QMRxxe3wRo-z7gXdzkguoSwkm1vkfdIRLHg1XcEowRYe0OUsD_LkAuHbUht7vjthYCI"/>
+</div>
+<!-- Text Content -->
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">No reports yet</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-lg px-4 leading-relaxed">
+                Add your first hospital or clinic report to start organizing your health history in one secure place.
+            </p>
+<!-- Primary Action Button -->
+<button class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md py-4 px-6 rounded-xl transition-colors duration-200 shadow-[0px_4px_12px_rgba(0,0,0,0.1)] active:scale-[0.98]">
+<span class="material-symbols-outlined text-lg" data-icon="add">add</span>
+                Add your first report
+            </button>
+</div>
+</main>
+<!-- Floating Action Button (FAB) -->
+<div class="fixed bottom-[96px] right-6 z-40 md:right-[calc(50%-220px+24px)]">
+<button class="w-14 h-14 bg-primary-container text-on-primary-container rounded-2xl shadow-[0px_8px_16px_rgba(14,118,136,0.25)] flex items-center justify-center hover:opacity-90 hover:-translate-y-1 transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined text-2xl" data-icon="add">add</span>
+</button>
+</div>
+<!-- BottomNavBar -->
+<nav aria-label="Bottom Navigation" class="fixed bottom-0 w-full z-50 rounded-t-xl shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] bg-surface dark:bg-surface-container-low transition-all duration-200 md:max-w-md md:left-1/2 md:-translate-x-1/2">
+<div class="flex justify-around items-center px-4 py-2 pb-safe w-full">
+<!-- Tab 1: Home (Active based on context of 'reports screen / main dashboard area') -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full px-4 py-1 active:scale-95 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined fill" data-icon="home" data-weight="fill">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<!-- Tab 2: Hospitals -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-variant dark:hover:bg-on-surface-variant rounded-full active:scale-95 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors" data-icon="hospital">cloud_download</span>
+<span class="font-label-sm text-label-sm mt-1 group-hover:text-primary transition-colors">Hospitals</span>
+</a>
+<!-- Tab 3: Trends -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-variant dark:hover:bg-on-surface-variant rounded-full active:scale-95 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors" data-icon="trending_up">trending_up</span>
+<span class="font-label-sm text-label-sm mt-1 group-hover:text-primary transition-colors">Trends</span>
+</a>
+<!-- Tab 4: Care Circle -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-variant dark:hover:bg-on-surface-variant rounded-full active:scale-95 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors" data-icon="group">group</span>
+<span class="font-label-sm text-label-sm mt-1 group-hover:text-primary transition-colors">Care Circle</span>
+</a>
+</div>
+<!-- Safe area padding for newer iPhones -->
+<div class="h-[env(safe-area-inset-bottom)]"></div>
+</nav>
+</body></html>

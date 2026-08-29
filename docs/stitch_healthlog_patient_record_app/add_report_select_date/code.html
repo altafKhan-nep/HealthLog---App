@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Add Report - Step 3: Date</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "secondary-fixed-dim": "#b8cac9",
+                        "surface-dim": "#d8dada",
+                        "surface-container-high": "#e6e8e9",
+                        "background": "#f8fafa",
+                        "surface-container": "#eceeee",
+                        "on-tertiary-fixed": "#2e1500",
+                        "secondary-container": "#d4e6e5",
+                        "inverse-surface": "#2e3131",
+                        "on-secondary-container": "#576867",
+                        "surface-bright": "#f8fafa",
+                        "tertiary-fixed-dim": "#ffb779",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#a8edff",
+                        "on-primary-fixed-variant": "#004e5b",
+                        "on-tertiary-container": "#ffeadb",
+                        "surface": "#f8fafa",
+                        "primary-fixed-dim": "#80d3e6",
+                        "tertiary": "#7b460e",
+                        "on-secondary-fixed": "#0e1e1e",
+                        "on-tertiary-fixed-variant": "#6c3a01",
+                        "on-primary-container": "#cdf4ff",
+                        "outline-variant": "#bec8cb",
+                        "tertiary-container": "#985e25",
+                        "on-surface-variant": "#3e484b",
+                        "surface-container-highest": "#e1e3e3",
+                        "surface-container-low": "#f2f4f4",
+                        "secondary": "#516161",
+                        "primary": "#005c6b",
+                        "outline": "#6f797c",
+                        "on-secondary-fixed-variant": "#3a4a49",
+                        "tertiary-fixed": "#ffdcc1",
+                        "inverse-primary": "#80d3e6",
+                        "inverse-on-surface": "#eff1f1",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e1e3e3",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#0e7688",
+                        "secondary-fixed": "#d4e6e5",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#006878",
+                        "on-primary-fixed": "#001f26",
+                        "on-background": "#191c1d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "40px",
+                        "gutter-card": "16px",
+                        "stack-md": "24px",
+                        "base": "8px",
+                        "margin-mobile": "20px",
+                        "stack-sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Atkinson Hyperlegible Next"],
+                        "headline-lg": ["Atkinson Hyperlegible Next"],
+                        "body-lg": ["Atkinson Hyperlegible Next"],
+                        "headline-md": ["Atkinson Hyperlegible Next"],
+                        "label-md": ["Atkinson Hyperlegible Next"],
+                        "label-sm": ["Atkinson Hyperlegible Next"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "26px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Hide scrollbar for clean UI but allow scrolling */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md antialiased overflow-hidden">
+<!-- Header Section -->
+<header class="w-full top-0 sticky bg-background z-10 px-margin-mobile pt-6 pb-4">
+<!-- Wizard Navigation / Top Bar -->
+<div class="flex items-center justify-between mb-stack-md">
+<button class="h-12 w-12 flex items-center justify-center rounded-full hover:bg-surface-container-highest transition-colors text-on-surface-variant active:scale-95">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+<span class="font-label-md text-label-md text-on-surface-variant">Step 3 of 5</span>
+<button class="h-12 px-4 rounded-full font-label-md text-label-md text-primary hover:bg-primary-container/10 transition-colors active:scale-95">
+                Save &amp; Exit
+            </button>
+</div>
+<!-- Progress Bar -->
+<div class="w-full bg-surface-variant rounded-full h-2 mb-stack-md overflow-hidden">
+<div class="bg-primary h-2 rounded-full transition-all duration-500 ease-out" style="width: 60%"></div>
+</div>
+<!-- Title -->
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">When was the visit?</h1>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto px-margin-mobile pb-32 no-scrollbar">
+<!-- Quick Select -->
+<div class="flex items-center gap-3 mb-stack-lg mt-stack-sm">
+<button class="flex items-center gap-2 px-4 py-2 bg-secondary-container text-on-secondary-container rounded-full font-label-md text-label-md border border-secondary-container hover:bg-surface-variant transition-colors active:scale-95 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] h-12">
+<span class="material-symbols-outlined text-[20px]">today</span>
+                Today
+            </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface text-on-surface-variant rounded-full font-label-md text-label-md border border-outline-variant hover:bg-surface-container-highest transition-colors active:scale-95 h-12">
+                Yesterday
+            </button>
+</div>
+<!-- Calendar Card -->
+<div class="bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-gutter-card mb-stack-lg border border-surface-container-highest">
+<!-- Calendar Header -->
+<div class="flex items-center justify-between mb-stack-md">
+<h2 class="font-headline-md text-headline-md text-on-surface">October 2023</h2>
+<div class="flex gap-2">
+<button class="h-12 w-12 flex items-center justify-center rounded-full hover:bg-surface-container-highest transition-colors text-on-surface-variant active:scale-95 border border-outline-variant">
+<span class="material-symbols-outlined text-[24px]">chevron_left</span>
+</button>
+<button class="h-12 w-12 flex items-center justify-center rounded-full hover:bg-surface-container-highest transition-colors text-on-surface-variant active:scale-95 border border-outline-variant">
+<span class="material-symbols-outlined text-[24px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Calendar Grid -->
+<div class="grid grid-cols-7 gap-y-4 gap-x-1 text-center">
+<!-- Days of week -->
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-2">S</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-2">M</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-2">T</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-2">W</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-2">T</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-2">F</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-2">S</div>
+<!-- Dates (Placeholder for Oct 2023 layout) -->
+<!-- Week 1 -->
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface-variant opacity-50 flex items-center justify-center hover:bg-surface-container-highest">24</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface-variant opacity-50 flex items-center justify-center hover:bg-surface-container-highest">25</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface-variant opacity-50 flex items-center justify-center hover:bg-surface-container-highest">26</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface-variant opacity-50 flex items-center justify-center hover:bg-surface-container-highest">27</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface-variant opacity-50 flex items-center justify-center hover:bg-surface-container-highest">28</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface-variant opacity-50 flex items-center justify-center hover:bg-surface-container-highest">29</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface-variant opacity-50 flex items-center justify-center hover:bg-surface-container-highest">30</button>
+<!-- Week 2 -->
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">1</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">2</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">3</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">4</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">5</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">6</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">7</button>
+<!-- Week 3 -->
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">8</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">9</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">10</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">11</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">12</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">13</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">14</button>
+<!-- Week 4 -->
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">15</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">16</button>
+<!-- Selected Date (Today) -->
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md bg-primary text-on-primary flex items-center justify-center shadow-[0px_4px_8px_rgba(0,92,107,0.3)] hover:opacity-90 ring-2 ring-primary ring-offset-2 ring-offset-surface">17</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">18</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">19</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">20</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">21</button>
+<!-- Week 5 -->
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">22</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">23</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">24</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">25</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">26</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">27</button>
+<button class="h-10 w-10 mx-auto rounded-full font-body-md text-body-md text-on-surface flex items-center justify-center hover:bg-surface-container-highest">28</button>
+</div>
+</div>
+<!-- Optional Time Selection (Contextual addition to fit "When") -->
+<div class="bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-gutter-card border border-surface-container-highest">
+<h3 class="font-label-md text-label-md text-on-surface mb-stack-sm">Approximate Time (Optional)</h3>
+<div class="flex items-center bg-surface-container-low rounded-lg border border-outline-variant p-1">
+<button class="flex-1 h-12 rounded-lg bg-surface shadow-sm font-label-md text-label-md text-on-surface transition-all">Morning</button>
+<button class="flex-1 h-12 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-variant transition-all">Afternoon</button>
+<button class="flex-1 h-12 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-variant transition-all">Evening</button>
+</div>
+</div>
+</main>
+<!-- Sticky Bottom Navigation Footer -->
+<footer class="fixed bottom-0 left-0 w-full bg-surface shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] z-50 px-margin-mobile py-4 pb-[max(16px,env(safe-area-inset-bottom))]">
+<div class="flex justify-between items-center max-w-md mx-auto w-full gap-4">
+<button class="flex-1 h-12 bg-secondary-container text-on-secondary-container font-label-md text-label-md rounded-full flex items-center justify-center hover:opacity-90 active:scale-95 transition-all">
+                Back
+            </button>
+<button class="flex-[2] h-12 bg-primary text-on-primary font-label-md text-label-md rounded-full flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-[0px_4px_12px_rgba(0,0,0,0.1)]">
+                Next Step
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</footer>
+</body></html>

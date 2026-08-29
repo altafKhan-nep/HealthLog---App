@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Add Report - Step 4 - HealthLog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#e1e3e3",
+                    "tertiary": "#7b460e",
+                    "error-container": "#ffdad6",
+                    "inverse-surface": "#2e3131",
+                    "surface-tint": "#006878",
+                    "on-tertiary-fixed": "#2e1500",
+                    "primary-fixed": "#a8edff",
+                    "on-tertiary-container": "#ffeadb",
+                    "surface-variant": "#e1e3e3",
+                    "on-secondary-container": "#576867",
+                    "on-surface": "#191c1d",
+                    "tertiary-fixed-dim": "#ffb779",
+                    "surface": "#f8fafa",
+                    "on-primary-fixed": "#001f26",
+                    "surface-container": "#eceeee",
+                    "on-primary": "#ffffff",
+                    "background": "#f8fafa",
+                    "on-primary-fixed-variant": "#004e5b",
+                    "error": "#ba1a1a",
+                    "surface-bright": "#f8fafa",
+                    "inverse-on-surface": "#eff1f1",
+                    "on-primary-container": "#cdf4ff",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#d4e6e5",
+                    "on-background": "#191c1d",
+                    "outline-variant": "#bec8cb",
+                    "on-tertiary-fixed-variant": "#6c3a01",
+                    "secondary-fixed-dim": "#b8cac9",
+                    "primary-fixed-dim": "#80d3e6",
+                    "surface-container-low": "#f2f4f4",
+                    "tertiary-fixed": "#ffdcc1",
+                    "on-secondary": "#ffffff",
+                    "surface-container-high": "#e6e8e9",
+                    "surface-dim": "#d8dada",
+                    "primary": "#005c6b",
+                    "inverse-primary": "#80d3e6",
+                    "on-secondary-fixed-variant": "#3a4a49",
+                    "secondary-fixed": "#d4e6e5",
+                    "secondary": "#516161",
+                    "on-secondary-fixed": "#0e1e1e",
+                    "primary-container": "#0e7688",
+                    "tertiary-container": "#985e25",
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#3e484b",
+                    "outline": "#6f797c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "40px",
+                    "base": "8px",
+                    "margin-mobile": "20px",
+                    "stack-md": "24px",
+                    "stack-sm": "12px",
+                    "gutter-card": "16px"
+            },
+            "fontFamily": {
+                    "body-lg": [
+                            "Atkinson Hyperlegible Next"
+                    ],
+                    "label-md": [
+                            "Atkinson Hyperlegible Next"
+                    ],
+                    "headline-md": [
+                            "Atkinson Hyperlegible Next"
+                    ],
+                    "label-sm": [
+                            "Atkinson Hyperlegible Next"
+                    ],
+                    "body-md": [
+                            "Atkinson Hyperlegible Next"
+                    ],
+                    "headline-lg": [
+                            "Atkinson Hyperlegible Next"
+                    ]
+            },
+            "fontSize": {
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "26px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-md": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Atkinson Hyperlegible Next', sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Smooth transitions for states */
+        .interactive-element {
+            transition: all 0.2s ease-in-out;
+        }
+        .interactive-element:active {
+            transform: scale(0.98);
+        }
+        
+        /* Hide scrollbar but keep functionality */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex flex-col items-center">
+<!-- Top App Bar - Simplified for Wizard Context -->
+<header class="w-full top-0 sticky bg-background flex items-center justify-between px-margin-mobile h-16 max-w-md mx-auto z-40">
+<button aria-label="Close Wizard" class="interactive-element w-12 h-12 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+<span class="font-headline-md text-headline-md text-primary font-bold tracking-tight">HealthLog</span>
+<div class="w-12 h-12"></div> <!-- Spacer for balance -->
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow w-full max-w-md mx-auto px-margin-mobile pb-32 flex flex-col relative">
+<!-- Progress Indicator -->
+<div class="mt-stack-sm mb-stack-lg w-full">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Step 4 of 5</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">Document Scan</span>
+</div>
+<!-- Progress Bar -->
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden flex">
+<div class="h-full bg-primary rounded-full transition-all duration-500 ease-out" style="width: 80%;"></div>
+</div>
+</div>
+<!-- Header Section -->
+<div class="mb-stack-lg text-center">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">Add a photo of the report</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Capture a clear image of your lab results or medical document to attach it to this entry. (Optional)</p>
+</div>
+<!-- Action Area - Dynamic based on state -->
+<div class="flex-grow flex flex-col items-center justify-center w-full mb-stack-lg">
+<!-- State 1: Pre-Upload (Visible by default) -->
+<div class="w-full flex flex-col items-center gap-stack-sm transition-opacity duration-300" id="pre-upload-state">
+<!-- Primary Action: Take Photo -->
+<button class="interactive-element group relative w-full aspect-square max-w-[240px] bg-surface rounded-3xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-surface-container-high flex flex-col items-center justify-center gap-stack-sm hover:shadow-[0px_8px_24px_rgba(0,0,0,0.08)] hover:border-primary-fixed-dim overflow-hidden" onclick="toggleUploadState()">
+<!-- Subtle background decoration -->
+<div class="absolute inset-0 bg-gradient-to-br from-primary-fixed/20 to-transparent opacity-50"></div>
+<div class="w-20 h-20 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container z-10 group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined icon-fill text-4xl">photo_camera</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface z-10">Take Photo</span>
+</button>
+<!-- Secondary Action: Choose from Gallery -->
+<button class="interactive-element mt-stack-sm w-full max-w-[240px] h-12 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-variant" onclick="toggleUploadState()">
+<span class="material-symbols-outlined text-lg">photo_library</span>
+                    Choose from Gallery
+                </button>
+</div>
+<!-- State 2: Post-Upload (Hidden by default) -->
+<div class="hidden w-full flex flex-col items-center gap-stack-md transition-opacity duration-300 opacity-0" id="post-upload-state">
+<!-- Document Preview Card -->
+<div class="relative w-full aspect-[3/4] max-w-[280px] bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-outline-variant p-2 group">
+<!-- The actual image preview -->
+<div class="w-full h-full rounded-lg overflow-hidden bg-surface-container-high relative">
+<img class="w-full h-full object-cover" data-alt="A brightly lit, top-down view of a generic medical lab report document resting on a clean white desk. The document features simulated, illegible clinical data and charts in a soft teal and charcoal color scheme. The lighting is soft and diffused, creating a professional, pristine, and modern clinical aesthetic typical of a high-end medical app interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVOMTKDR9oHDCRC2bU4I-LNUvn3OiBB0bkwyByLDj10IeQusxquPMSo9ii3bkTK3M28etjg3yMLNtGnI5N9ilxs0C0Du4hs7LjKid_vCtgim4dVT9eG59fiLSpVGhID5yrL-Y0Vc4drMM9cwOMWe9kO9v0bhPJkBv62l0C06cw9yptkbaYcbBiFGPjaa5JxaT_Q_TmrLYggvit_MQ8ulAPvSYLan4NL3kxRGVDpzQ4JYjyWkFkVWyE"/>
+<!-- Success overlay -->
+<div class="absolute top-2 right-2 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined icon-fill text-sm">check</span>
+</div>
+</div>
+</div>
+<!-- Retake Action -->
+<button class="interactive-element h-12 px-6 rounded-full border border-outline text-on-surface font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-container" onclick="toggleUploadState()">
+<span class="material-symbols-outlined text-lg">refresh</span>
+                    Retake Photo
+                </button>
+</div>
+</div>
+<!-- Skip Link -->
+<div class="w-full flex justify-center pb-stack-lg">
+<button class="font-label-md text-label-md text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary transition-colors py-2 px-4 rounded-lg hover:bg-surface-container-low">
+                Skip — I'll add this later
+            </button>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Contextual for Wizard) -->
+<!-- Suppressing the global BottomNavBar JSON shell as per guidelines: "Automatic Suppression: You MUST exclude the navigation shell if the page intent is: Linear/Transactional... Onboarding..." -->
+<!-- Wizard Navigation Footer -->
+<div class="fixed bottom-0 left-0 w-full bg-surface shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] z-50">
+<div class="max-w-md mx-auto px-margin-mobile py-4 pb-safe flex items-center justify-between gap-stack-sm">
+<!-- Back Button -->
+<button class="interactive-element h-12 px-6 rounded-full text-on-surface-variant font-label-md text-label-md flex items-center gap-2 hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+                Back
+            </button>
+<!-- Next Button (Primary) -->
+<button class="interactive-element h-12 px-8 rounded-full bg-primary text-on-primary font-label-md text-label-md flex items-center gap-2 shadow-[0px_4px_8px_rgba(0,92,107,0.2)] hover:bg-on-primary-fixed-variant transition-colors">
+                Next Step
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Minimal Script for State Toggling -->
+<script>
+        function toggleUploadState() {
+            const preState = document.getElementById('pre-upload-state');
+            const postState = document.getElementById('post-upload-state');
+            
+            if (preState.classList.contains('hidden')) {
+                // Switch to Pre-Upload
+                postState.style.opacity = '0';
+                setTimeout(() => {
+                    postState.classList.add('hidden');
+                    preState.classList.remove('hidden');
+                    setTimeout(() => {
+                        preState.style.opacity = '1';
+                    }, 50);
+                }, 300);
+            } else {
+                // Switch to Post-Upload
+                preState.style.opacity = '0';
+                setTimeout(() => {
+                    preState.classList.add('hidden');
+                    postState.classList.remove('hidden');
+                    setTimeout(() => {
+                        postState.style.opacity = '1';
+                    }, 50);
+                }, 300);
+            }
+        }
+    </script>
+</body></html>

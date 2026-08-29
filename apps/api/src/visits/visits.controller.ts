@@ -1,0 +1,321 @@
+import { Request, Response } from "express";
+// @ts-ignore
+import pdfParse from "pdf-parse";
+import { Hospital } from "../hospitals/hospital.model";
+import { Visit } from "./visit.model";
+import { User } from "../auth/auth.model";
+import { AuthedRequest } from "../middleware/requireAuth";
+import { uploadToCloudinary, deleteFromCloudinary } from "../config/cloudinary";
+import { extractTextFromImage, extractReportFields, generatePlainLanguageSummary } from "../config/groq";
+
+/** POST /api/visits — create a new visit */
+export async function createVisit(req: AuthedRequest, res: Response) {
+  try {
+    const { hospitalId, visitDate, doctorName, reason, tag } = req.body;
+    if (!hospitalId || !visitDate) {
+      return res.status(400).json({ error: "hospitalId and visitDate are required" });
+    }
+
+    const hospital = await Hospital.findOne({
+      _id: hospitalId,
+      $or: [{ isGlobal: true }, { userId: req.userId }],
+    });
+    if (!hospital) return res.status(404).json({ error: "Hospital not found" });
+
+    const visit = await Visit.create({
+      userId: req.userId,
+      hospitalId,
+      visitDate,
+      doctorName: doctorName || "",
+      reason: reason || "",
+      tag: tag || "other",
+      status: "ready",
+      entryMethod: "manual",
+    });
+
+    // Update hospital visit count and dates
+    await Hospital.findByIdAndUpdate(hospitalId, {
+      $inc: { visitCount: 1 },
+      $set: { lastVisitDate: visitDate },
+      $min: { firstVisitDate: visitDate },
+    });
+
+    const populated = await visit.populate("hospitalId", "name location type");
+    return res.status(201).json(populated);
+  } catch (err) {
+    console.error("[visits] create error:", err);
+    return res.status(500).json({ error: "Failed to create visit" });
+  }
+}
+
+/** POST /api/visits/:id/attachments — upload a photo/PDF (base64 or multipart) */
+export async function uploadAttachment(req: AuthedRequest, res: Response) {
+  try {
+    const visit = await Visit.findOne({ _id: req.params.id, userId: req.userId });
+    if (!visit) return res.status(404).json({ error: "Visit not found" });
+
+    let fileBuffer: Buffer;
+    let mimeType: string;
+
+    // Support both base64 (from mobile) and multipart (from web/testing)
+    if (req.body.imageBase64) {
+      const base64Data = req.body.imageBase64.replace(/^data:[\w/]+;base64,/, "");
+      fileBuffer = Buffer.from(base64Data, "base64");
+      mimeType = req.body.mimeType || "image/jpeg";
+    } else if (req.file) {
+      fileBuffer = req.file.buffer;
+      mimeType = req.file.mimetype;
+    } else {
+      return res.status(400).json({ error: "No file provided" });
+    }
+
+    const { url, publicId } = await uploadToCloudinary(fileBuffer, mimeType);
+
+    visit.attachments.push({
+      fileUrl: url,
+      fileType: mimeType,
+      cloudinaryPublicId: publicId,
+    });
+    visit.status = "processing";
+    visit.entryMethod = "scan";
+    await visit.save();
+
+    // Process in background (non-blocking)
+    processReport(visit._id.toString(), url, mimeType, fileBuffer).catch((err) =>
+      console.error("[pipeline] processing error:", err)
+    );
+
+    return res.json(visit);
+  } catch (err) {
+    console.error("[visits] attachment error:", err);
+    return res.status(500).json({ error: "Failed to upload attachment" });
+  }
+}
+
+/** POST /api/visits/:id/attachments/batch — upload multiple files (base64 array) */
+export async function uploadBatchAttachments(req: AuthedRequest, res: Response) {
+  try {
+    const visit = await Visit.findOne({ _id: req.params.id, userId: req.userId });
+    if (!visit) return res.status(404).json({ error: "Visit not found" });
+
+    const { files } = req.body;
+    if (!Array.isArray(files) || files.length === 0) {
+      return res.status(400).json({ error: "files array is required" });
+    }
+
+    const uploaded: Array<{ fileUrl: string; fileType: string; cloudinaryPublicId: string }> = [];
+
+    for (const file of files) {
+      try {
+        const base64Data = (file.imageBase64 || "").replace(/^data:[\w/]+;base64,/, "");
+        const fileBuffer = Buffer.from(base64Data, "base64");
+        const mimeType = file.mimeType || "image/jpeg";
+
+        const { url, publicId } = await uploadToCloudinary(fileBuffer, mimeType);
+        uploaded.push({ fileUrl: url, fileType: mimeType, cloudinaryPublicId: publicId });
+
+        // Process first file in background (non-blocking)
+        if (uploaded.length === 1) {
+          processReport(visit._id.toString(), url, mimeType, fileBuffer).catch((err) =>
+            console.error("[pipeline] processing error:", err)
+          );
+        }
+      } catch (fileErr) {
+        console.error("[batch] failed to upload file:", fileErr);
+      }
+    }
+
+    visit.attachments.push(...uploaded);
+    visit.status = "processing";
+    visit.entryMethod = "scan";
+    await visit.save();
+
+    return res.json(visit);
+  } catch (err) {
+    console.error("[visits] batch attachment error:", err);
+    return res.status(500).json({ error: "Failed to upload attachments" });
+  }
+}
+
+/** Background: OCR → extract → summarize */
+async function processReport(visitId: string, fileUrl: string, fileType: string, fileBuffer?: Buffer) {
+  const visit = await Visit.findById(visitId);
+  if (!visit) return;
+
+  try {
+    let ocrText = "";
+
+    if (fileType === "application/pdf" || fileType === "pdf") {
+      // PDF: extract text directly using pdf-parse
+      console.log("[pipeline] processing PDF...");
+      const pdfData = fileBuffer
+        ? await pdfParse(fileBuffer)
+        : await pdfParse(Buffer.from(await (await fetch(fileUrl)).arrayBuffer()));
+      ocrText = pdfData.text || "";
+      console.log("[pipeline] PDF text extracted:", ocrText.length, "chars");
+    } else {
+      // Image: use vision model for OCR
+      const response = await fetch(fileUrl);
+      const arrayBuffer = await response.arrayBuffer();
+      const base64 = Buffer.from(arrayBuffer).toString("base64");
+      ocrText = await extractTextFromImage(base64);
+    }
+
+    if (!ocrText.trim()) {
+      // No text extracted — mark as ready with a note
+      visit.extractedFields = {
+        diagnosis: null,
+        medication: null,
+        plainLanguageSummary: fileType.includes("pdf")
+          ? "PDF uploaded successfully. Text extraction returned no content. You can view the PDF in the visit details."
+          : "Report photo uploaded successfully. AI text extraction is not available for this image type. You can view the photo in the visit details.",
+        testResults: [],
+      };
+      visit.status = "ready";
+      await visit.save();
+      console.log("[pipeline] no text extracted, saved as ready");
+      return;
+    }
+
+    // Extract structured fields from text
+    const extractedFields = await extractReportFields(ocrText);
+
+    // Generate plain-language summary
+    const plainLanguageSummary = await generatePlainLanguageSummary(ocrText, extractedFields);
+
+    visit.extractedFields = {
+      diagnosis: extractedFields.diagnosis || null,
+      medication: extractedFields.medication || null,
+      plainLanguageSummary,
+      testResults: extractedFields.testResults || [],
+    };
+
+    // If doctor name wasn't provided, use extracted
+    if (!visit.doctorName && extractedFields.doctorName) {
+      visit.doctorName = extractedFields.doctorName;
+    }
+
+    visit.status = "ready";
+    await visit.save();
+    console.log("[pipeline] processing complete, status: ready");
+  } catch (err) {
+    console.error("[pipeline] failed:", err);
+    // Don't mark as failed — keep it "ready" with the file attached
+    visit.extractedFields = {
+      diagnosis: null,
+      medication: null,
+      plainLanguageSummary: "Report uploaded. AI processing encountered an error. Please consult your doctor for interpretation.",
+      testResults: [],
+    };
+    visit.status = "ready";
+    await visit.save();
+  }
+}
+
+/** GET /api/visits — timeline with filters */
+export async function listVisits(req: AuthedRequest, res: Response) {
+  try {
+    const { from, to, hospitalId, tag, status } = req.query;
+    const filter: any = { userId: req.userId };
+
+    if (from || to) {
+      filter.visitDate = {};
+      if (from) filter.visitDate.$gte = new Date(from as string);
+      if (to) filter.visitDate.$lte = new Date(to as string);
+    }
+    if (hospitalId) filter.hospitalId = hospitalId;
+    if (tag) filter.tag = tag;
+    if (status) filter.status = status;
+
+    const visits = await Visit.find(filter)
+      .populate("hospitalId", "name location type")
+      .sort({ visitDate: -1 });
+
+    return res.json(visits);
+  } catch (err) {
+    console.error("[visits] list error:", err);
+    return res.status(500).json({ error: "Failed to fetch visits" });
+  }
+}
+
+/** GET /api/visits/:id — visit detail */
+export async function getVisit(req: AuthedRequest, res: Response) {
+  try {
+    let visit = await Visit.findOne({ _id: req.params.id, userId: req.userId })
+      .populate({
+        path: "hospitalId",
+        select: "name location type isGlobal",
+      });
+
+    if (!visit) {
+      const user = await User.findById(req.userId);
+      const isCareCircleMember = user?.careCircleMembers.some(
+        (id) => id.toString() === req.params.id
+      );
+      if (!isCareCircleMember) {
+        const possibleVisit = await Visit.findById(req.params.id).select("userId");
+        if (possibleVisit && user?.careCircleMembers.some((id) => id.toString() === possibleVisit.userId.toString())) {
+          visit = await Visit.findById(req.params.id).populate({
+            path: "hospitalId",
+            select: "name location type isGlobal",
+          });
+        }
+      }
+    }
+
+    if (!visit) return res.status(404).json({ error: "Visit not found" });
+    return res.json(visit);
+  } catch (err) {
+    console.error("[visits] get error:", err);
+    return res.status(500).json({ error: "Failed to fetch visit" });
+  }
+}
+
+/** PUT /api/visits/:id — update a visit */
+export async function updateVisit(req: AuthedRequest, res: Response) {
+  try {
+    const visit = await Visit.findOne({ _id: req.params.id, userId: req.userId });
+    if (!visit) return res.status(404).json({ error: "Visit not found" });
+
+    const { hospitalId, visitDate, doctorName, reason, tag } = req.body;
+
+    if (hospitalId && hospitalId !== visit.hospitalId.toString()) {
+      await Hospital.findByIdAndUpdate(visit.hospitalId, { $inc: { visitCount: -1 } });
+      await Hospital.findByIdAndUpdate(hospitalId, { $inc: { visitCount: 1 } });
+    }
+
+    Object.assign(visit, { hospitalId, visitDate, doctorName, reason, tag });
+    await visit.save();
+
+    const populated = await visit.populate("hospitalId", "name location type");
+    return res.json(populated);
+  } catch (err) {
+    console.error("[visits] update error:", err);
+    return res.status(500).json({ error: "Failed to update visit" });
+  }
+}
+
+/** DELETE /api/visits/:id — delete a visit and its attachments */
+export async function deleteVisit(req: AuthedRequest, res: Response) {
+  try {
+    const visit = await Visit.findOne({ _id: req.params.id, userId: req.userId });
+    if (!visit) return res.status(404).json({ error: "Visit not found" });
+
+    // Delete Cloudinary attachments
+    for (const att of visit.attachments) {
+      try {
+        await deleteFromCloudinary(att.cloudinaryPublicId);
+      } catch (e) {
+        console.error("[visits] failed to delete attachment:", att.cloudinaryPublicId);
+      }
+    }
+
+    await Hospital.findByIdAndUpdate(visit.hospitalId, { $inc: { visitCount: -1 } });
+    await Visit.findByIdAndDelete(visit._id);
+
+    return res.json({ message: "Visit deleted" });
+  } catch (err) {
+    console.error("[visits] delete error:", err);
+    return res.status(500).json({ error: "Failed to delete visit" });
+  }
+}

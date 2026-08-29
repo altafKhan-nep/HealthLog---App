@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HealthLog - Trends</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#d4e6e5",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f8fafa",
+                        "on-secondary-fixed-variant": "#3a4a49",
+                        "tertiary": "#7b460e",
+                        "on-error-container": "#93000a",
+                        "outline": "#6f797c",
+                        "on-primary-fixed": "#001f26",
+                        "primary-container": "#0e7688",
+                        "secondary": "#516161",
+                        "on-secondary-container": "#576867",
+                        "surface-dim": "#d8dada",
+                        "on-primary-container": "#cdf4ff",
+                        "on-background": "#191c1d",
+                        "surface-container-high": "#e6e8e9",
+                        "tertiary-fixed-dim": "#ffb779",
+                        "surface-variant": "#e1e3e3",
+                        "on-tertiary-fixed": "#2e1500",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "background": "#f8fafa",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#eff1f1",
+                        "surface": "#f8fafa",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#ffdcc1",
+                        "outline-variant": "#bec8cb",
+                        "surface-container-highest": "#e1e3e3",
+                        "inverse-surface": "#2e3131",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f2f4f4",
+                        "primary": "#005c6b",
+                        "surface-tint": "#006878",
+                        "on-surface-variant": "#3e484b",
+                        "secondary-fixed": "#d4e6e5",
+                        "primary-fixed-dim": "#80d3e6",
+                        "secondary-fixed-dim": "#b8cac9",
+                        "tertiary-container": "#985e25",
+                        "on-surface": "#191c1d",
+                        "on-tertiary-container": "#ffeadb",
+                        "primary-fixed": "#a8edff",
+                        "on-tertiary-fixed-variant": "#6c3a01",
+                        "on-secondary-fixed": "#0e1e1e",
+                        "on-primary-fixed-variant": "#004e5b",
+                        "inverse-primary": "#80d3e6",
+                        "surface-container": "#eceeee",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "12px",
+                        "stack-lg": "40px",
+                        "stack-md": "24px",
+                        "base": "8px",
+                        "gutter-card": "16px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Atkinson Hyperlegible"],
+                        "headline-md": ["Atkinson Hyperlegible"],
+                        "label-sm": ["Atkinson Hyperlegible"],
+                        "body-md": ["Atkinson Hyperlegible"],
+                        "headline-lg": ["Atkinson Hyperlegible"],
+                        "body-lg": ["Atkinson Hyperlegible"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "26px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md antialiased pb-[80px]">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-40 bg-background flex items-center justify-between px-margin-mobile h-16 w-full max-w-md mx-auto">
+<div class="flex items-center gap-3">
+<img alt="User Profile Photo" class="w-8 h-8 rounded-full object-cover shadow-sm" data-alt="A small, professional circular avatar portrait of a user in a clean, modern medical application setting. The lighting is soft and flattering, emphasizing a calm and reassuring atmosphere consistent with a health tracking app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVzlkPggxNRVHp7S1f7BI8Mou626DXjMUsXuioCbLsYWQKXofRC1eHPAzO8Wvgg0U6WdOEcnd6QKRVTDaJWiqu8NSvG4cfo-UnpmDEv92kY2NyOmGA7rwzSFQnmEDr-jXNV6ozzFwLBAMafX7272RMwVRQQkpYjx563Ugw3kM6IeHAuRn6rze_3pLO8VjwP072_4L60mxI0GbjAzchJNcHgr8wuOwVh5fpqOv0obVxrCGniQ3YW5d8"/>
+<span class="font-headline-md text-headline-md text-primary">HealthLog</span>
+</div>
+<button aria-label="Notifications" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-opacity duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<main class="max-w-md mx-auto px-margin-mobile pt-4 pb-stack-lg flex flex-col gap-stack-md">
+<!-- Metric Selector -->
+<section class="flex flex-col gap-base">
+<label class="font-label-md text-label-md text-on-surface-variant" for="metric-select">Selected Metric</label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface border border-outline rounded-lg px-4 py-3 font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary shadow-[0px_4px_12px_rgba(0,0,0,0.05)]" id="metric-select">
+<option selected="" value="vitamin-d">Vitamin D (ng/mL)</option>
+<option value="cholesterol">Cholesterol (mg/dL)</option>
+<option value="blood-pressure">Blood Pressure (mmHg)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-on-surface-variant">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</section>
+<!-- Chart Container -->
+<section class="bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-gutter-card flex flex-col gap-stack-sm">
+<div class="flex justify-between items-end mb-2">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">6 Month Trend</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Optimal Range: 30 - 50 ng/mL</p>
+</div>
+<div class="text-right">
+<span class="font-headline-lg text-headline-lg text-primary block">18</span>
+<span class="font-label-sm text-label-sm text-error">Low - Latest</span>
+</div>
+</div>
+<!-- Placeholder for Chart -->
+<div class="w-full h-48 relative border-b border-l border-outline-variant rounded-bl-sm mt-4">
+<!-- Y-Axis Labels -->
+<div class="absolute -left-6 top-0 bottom-0 flex flex-col justify-between font-label-sm text-label-sm text-outline h-full">
+<span>50</span>
+<span>30</span>
+<span>10</span>
+</div>
+<!-- X-Axis Labels -->
+<div class="absolute -bottom-6 left-0 right-0 flex justify-between font-label-sm text-label-sm text-outline w-full px-2">
+<span>May</span>
+<span>Aug</span>
+<span>Oct</span>
+</div>
+<!-- Reference Line (Optimal Min) -->
+<div class="absolute top-[40%] left-0 w-full border-t border-dashed border-tertiary-fixed-dim/50 z-0"></div>
+<!-- Fake Chart SVG -->
+<svg class="absolute inset-0 w-full h-full z-10" preserveaspectratio="none" viewbox="0 0 100 100">
+<polyline class="opacity-30" fill="none" points="10,60 50,80 90,90" stroke="#005c6b" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline>
+<polyline fill="none" points="10,60 50,80" stroke="#985e25" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></polyline>
+<polyline fill="none" points="50,80 90,90" stroke="#005c6b" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></polyline>
+<!-- Data Points -->
+<circle cx="10" cy="60" fill="#985e25" r="3"></circle>
+<circle cx="50" cy="80" fill="#005c6b" r="3"></circle>
+<circle cx="90" cy="90" fill="#005c6b" r="3"></circle>
+</svg>
+</div>
+<!-- Legend -->
+<div class="flex gap-4 mt-8 pt-4 border-t border-surface-variant">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">City General</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-tertiary-container"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">North Hills</span>
+</div>
+</div>
+</section>
+<!-- Recent Readings List -->
+<section class="flex flex-col gap-stack-sm">
+<h3 class="font-label-md text-label-md text-on-surface-variant px-1">Recent Readings</h3>
+<div class="flex flex-col rounded-xl overflow-hidden bg-surface shadow-[0px_4px_12px_rgba(0,0,0,0.05)]">
+<!-- List Item 1 -->
+<div class="flex items-center justify-between p-4 border-b border-surface-variant hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-error-container text-on-error-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined filled">science</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Oct 24, 2023</p>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="font-label-sm text-label-sm">City General Hospital</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="font-headline-md text-headline-md text-on-surface block">18</span>
+<span class="font-label-sm text-label-sm bg-error text-on-error px-2 py-0.5 rounded-full inline-block mt-1">Low</span>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="flex items-center justify-between p-4 border-b border-surface-variant hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-error-container text-on-error-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined filled">science</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Aug 15, 2023</p>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="font-label-sm text-label-sm">City General Hospital</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="font-headline-md text-headline-md text-on-surface block">22</span>
+<span class="font-label-sm text-label-sm bg-error text-on-error px-2 py-0.5 rounded-full inline-block mt-1">Low</span>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="flex items-center justify-between p-4 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined filled">science</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">May 10, 2023</p>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<div class="w-2 h-2 rounded-full bg-tertiary-container"></div>
+<span class="font-label-sm text-label-sm">North Hills Medical</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="font-headline-md text-headline-md text-on-surface block">35</span>
+<span class="font-label-sm text-label-sm bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full inline-block mt-1 border border-outline-variant">Normal</span>
+</div>
+</div>
+</div>
+<button class="mt-2 w-full py-3 flex items-center justify-center gap-2 bg-secondary-container text-on-secondary-container rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                Add New Reading
+            </button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] bg-surface flex justify-around items-center px-4 py-2 pb-safe max-w-md mx-auto left-0 right-0">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-variant active:scale-95 transition-all duration-200 rounded-lg group">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-variant active:scale-95 transition-all duration-200 rounded-lg group">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">cloud_download</span>
+<span class="font-label-sm text-label-sm">Hospitals</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-95 transition-all duration-200">
+<span class="material-symbols-outlined filled mb-1">trending_up</span>
+<span class="font-label-sm text-label-sm">Trends</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-variant active:scale-95 transition-all duration-200 rounded-lg group">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">group</span>
+<span class="font-label-sm text-label-sm">Care Circle</span>
+</button>
+</nav>
+</body></html>

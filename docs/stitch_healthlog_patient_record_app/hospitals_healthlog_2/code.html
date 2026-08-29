@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Hospitals</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "on-primary-fixed-variant": "#004e5b",
+                            "surface-bright": "#f8fafa",
+                            "surface-container-highest": "#e1e3e3",
+                            "surface-tint": "#006878",
+                            "on-tertiary-fixed-variant": "#6c3a01",
+                            "secondary-container": "#d4e6e5",
+                            "surface-dim": "#d8dada",
+                            "on-primary-container": "#cdf4ff",
+                            "surface-variant": "#e1e3e3",
+                            "on-secondary-fixed": "#0e1e1e",
+                            "secondary-fixed-dim": "#b8cac9",
+                            "on-tertiary-container": "#ffeadb",
+                            "surface-container-low": "#f2f4f4",
+                            "on-tertiary-fixed": "#2e1500",
+                            "background": "#f8fafa",
+                            "on-secondary-container": "#576867",
+                            "on-surface": "#191c1d",
+                            "on-primary": "#ffffff",
+                            "tertiary-fixed": "#ffdcc1",
+                            "on-surface-variant": "#3e484b",
+                            "on-primary-fixed": "#001f26",
+                            "surface-container": "#eceeee",
+                            "tertiary": "#7b460e",
+                            "on-tertiary": "#ffffff",
+                            "primary-fixed-dim": "#80d3e6",
+                            "inverse-on-surface": "#eff1f1",
+                            "tertiary-fixed-dim": "#ffb779",
+                            "surface": "#f8fafa",
+                            "on-error-container": "#93000a",
+                            "on-error": "#ffffff",
+                            "primary": "#005c6b",
+                            "outline-variant": "#bec8cb",
+                            "on-secondary": "#ffffff",
+                            "on-secondary-fixed-variant": "#3a4a49",
+                            "surface-container-lowest": "#ffffff",
+                            "outline": "#6f797c",
+                            "primary-fixed": "#a8edff",
+                            "secondary": "#516161",
+                            "error-container": "#ffdad6",
+                            "error": "#ba1a1a",
+                            "surface-container-high": "#e6e8e9",
+                            "inverse-surface": "#2e3131",
+                            "primary-container": "#0e7688",
+                            "secondary-fixed": "#d4e6e5",
+                            "inverse-primary": "#80d3e6",
+                            "tertiary-container": "#985e25",
+                            "on-background": "#191c1d"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "stack-sm": "12px",
+                            "gutter-card": "16px",
+                            "margin-mobile": "20px",
+                            "stack-md": "24px",
+                            "stack-lg": "40px",
+                            "base": "8px"
+                    },
+                    "fontFamily": {
+                            "headline-lg": ["Atkinson Hyperlegible Next"],
+                            "label-sm": ["Atkinson Hyperlegible Next"],
+                            "label-md": ["Atkinson Hyperlegible Next"],
+                            "body-lg": ["Atkinson Hyperlegible Next"],
+                            "body-md": ["Atkinson Hyperlegible Next"],
+                            "headline-md": ["Atkinson Hyperlegible Next"]
+                    },
+                    "fontSize": {
+                            "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                            "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                            "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                            "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}],
+                            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                            "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { -webkit-tap-highlight-color: transparent; }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24 font-body-md antialiased md:pb-0">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-background dark:bg-background z-40 transition-opacity duration-200">
+<div class="flex items-center justify-between px-margin-mobile h-16 w-full max-w-md mx-auto md:max-w-4xl">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center overflow-hidden shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary dark:text-primary-fixed-dim tracking-tight">Hospitals</h1>
+</div>
+<button class="w-12 h-12 flex items-center justify-center hover:opacity-80 transition-opacity text-on-surface-variant dark:text-outline-variant active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-md mx-auto px-margin-mobile py-stack-md flex flex-col gap-stack-lg md:max-w-4xl">
+<!-- Search & Filter (Added for modern UX) -->
+<section class="flex flex-col gap-stack-sm">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-12 pr-4 h-12 rounded-full border border-outline-variant bg-surface text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md shadow-sm" placeholder="Search hospitals..." type="text"/>
+</div>
+</section>
+<!-- Hospital Cards List -->
+<section class="flex flex-col gap-6">
+<!-- Card 1 -->
+<div class="bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-gutter-card flex items-start gap-4 hover:shadow-[0px_6px_16px_rgba(0,0,0,0.08)] transition-shadow">
+<div class="w-12 h-12 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">local_hospital</span>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<h2 class="font-headline-md text-headline-md text-on-surface">City General Hospital</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Downtown Medical Campus</p>
+<div class="flex items-center gap-4 mt-2">
+<div class="flex items-center gap-1.5 bg-surface-container-low px-2 py-1 rounded-md">
+<span class="material-symbols-outlined text-[16px] text-secondary">history</span>
+<span class="font-label-md text-label-md text-secondary">4 visits</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="font-label-sm text-label-sm">Last: Oct 12, 2023</span>
+</div>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-gutter-card flex items-start gap-4 hover:shadow-[0px_6px_16px_rgba(0,0,0,0.08)] transition-shadow">
+<div class="w-12 h-12 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">local_hospital</span>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<h2 class="font-headline-md text-headline-md text-on-surface">Westside Clinic</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Specialty Care Center</p>
+<div class="flex items-center gap-4 mt-2">
+<div class="flex items-center gap-1.5 bg-surface-container-low px-2 py-1 rounded-md">
+<span class="material-symbols-outlined text-[16px] text-secondary">history</span>
+<span class="font-label-md text-label-md text-secondary">1 visit</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="font-label-sm text-label-sm">Last: Aug 05, 2023</span>
+</div>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-gutter-card flex items-start gap-4 hover:shadow-[0px_6px_16px_rgba(0,0,0,0.08)] transition-shadow">
+<div class="w-12 h-12 rounded-lg bg-tertiary-container text-on-tertiary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">local_hospital</span>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<h2 class="font-headline-md text-headline-md text-on-surface">North Hills Medical</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Urgent Care &amp; Imaging</p>
+<div class="flex items-center gap-4 mt-2">
+<div class="flex items-center gap-1.5 bg-surface-container-low px-2 py-1 rounded-md">
+<span class="material-symbols-outlined text-[16px] text-secondary">history</span>
+<span class="font-label-md text-label-md text-secondary">2 visits</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="font-label-sm text-label-sm">Last: Jan 22, 2023</span>
+</div>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe bg-surface dark:bg-surface-container-low shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl z-50 md:hidden transition-all duration-200">
+<!-- Home (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-variant dark:hover:bg-on-surface-variant active:scale-95 transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<!-- Hospitals (Active) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full px-4 py-1 active:scale-95 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">cloud_download</span>
+<span class="font-label-sm text-label-sm font-semibold">Hospitals</span>
+</a>
+<!-- Trends (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-variant dark:hover:bg-on-surface-variant active:scale-95 transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">trending_up</span>
+<span class="font-label-sm text-label-sm">Trends</span>
+</a>
+<!-- Care Circle (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1 hover:bg-surface-variant dark:hover:bg-on-surface-variant active:scale-95 transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">group</span>
+<span class="font-label-sm text-label-sm">Care Circle</span>
+</a>
+</nav>
+</body></html>
