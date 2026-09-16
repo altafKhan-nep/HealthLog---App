@@ -1,16 +1,18 @@
-HealthLog 🩺
+GitHub Copilot Chat Assistant — formatted README below:
+
+# HealthLog 🩺
 
 Your medical history, organized in one place.
 
-HealthLog is a privacy-focused mobile health record platform designed to help people turn scattered medical documents, hospital reports, and health information into a structured, accessible personal health timeline.
+HealthLog is a privacy-focused mobile health record platform designed to help people turn scattered medical documents, hospital reports, and health information into a structured, accessible persona[...]
 
-Instead of keeping medical history across paper files, phone galleries, messaging apps, and different hospitals, HealthLog aims to give patients a single place to capture, organize, understand, and securely share their health records.
+Instead of keeping medical history across paper files, phone galleries, messaging apps, and different hospitals, HealthLog aims to give patients a single place to capture, organize, understand, and[...]
 
 «Your health history should belong to you.»
 
 ---
 
-🚀 The Problem
+## 🚀 The Problem
 
 Medical history is often fragmented.
 
@@ -36,7 +38,7 @@ HealthLog is being built to solve this fragmentation.
 
 ---
 
-💡 Our Vision
+## 💡 Our Vision
 
 HealthLog aims to become a personal health data layer where individuals can build a longitudinal record of their own medical history.
 
@@ -62,9 +64,9 @@ The goal is to help patients arrive better prepared.
 
 ---
 
-✨ Core Features
+## ✨ Core Features
 
-📄 Medical Record Capture
+### 📄 Medical Record Capture
 
 Capture medical history directly from your phone.
 
@@ -80,7 +82,7 @@ Planned support includes:
 
 ---
 
-🤖 AI-Powered Report Explanation
+## 🤖 AI-Powered Report Explanation
 
 Medical reports can contain terminology that is difficult for non-medical users to understand.
 
@@ -102,7 +104,7 @@ The purpose is to improve understanding—not to provide a medical diagnosis.
 
 ---
 
-📊 Health Timeline
+## 📊 Health Timeline
 
 Instead of treating every medical report as an isolated document, HealthLog is designed around a longitudinal timeline.
 
@@ -119,7 +121,7 @@ This creates a clearer picture of how a person's health history develops over ti
 
 ---
 
-🏥 Hospital & Visit Organization
+## 🏥 Hospital & Visit Organization
 
 Health records can be associated with specific healthcare visits and hospitals.
 
@@ -133,7 +135,7 @@ and
 
 ---
 
-📈 Health Trends
+## 📈 Health Trends
 
 HealthLog is planned to transform stored health information into meaningful visual trends.
 
@@ -149,7 +151,7 @@ The objective is to make health history understandable at a glance.
 
 ---
 
-🔐 Privacy & Data Ownership
+## 🔐 Privacy & Data Ownership
 
 Health information is extremely sensitive.
 
@@ -170,7 +172,7 @@ Security will become increasingly important as HealthLog moves from prototype to
 
 ---
 
-🤝 Care Circle
+## 🤝 Care Circle
 
 A future HealthLog feature is Care Circle.
 
@@ -187,7 +189,7 @@ Access should be explicit, controlled, and revocable rather than permanently exp
 
 ---
 
-🔗 Secure Record Sharing
+## 🔗 Secure Record Sharing
 
 HealthLog is planned to support controlled sharing of selected medical information.
 
@@ -208,7 +210,7 @@ Healthcare Professional
 
 ---
 
-🧠 Product Architecture
+## 🧠 Product Architecture
 
 HealthLog currently follows a mobile + API architecture:
 
@@ -256,7 +258,7 @@ Future components can be added around this foundation, including:
 
 ---
 
-🛠️ Tech Stack
+## 🛠️ Tech Stack
 
 Layer| Technology
 Mobile| React Native
@@ -272,7 +274,7 @@ The current repository contains separate "mobile" and "api" applications with do
 
 ---
 
-📁 Project Structure
+## 📁 Project Structure
 
 HealthLog---App/
 │
@@ -302,7 +304,7 @@ The repository currently follows this mobile/API/docs separation.
 
 ---
 
-⚙️ Getting Started
+## ⚙️ Getting Started
 
 Prerequisites
 
@@ -318,19 +320,22 @@ Install:
 
 1. Clone the repository
 
+```bash
 git clone https://github.com/altafKhan-nep/HealthLog---App.git
 
 cd HealthLog---App
+```
 
 ---
 
-🔧 2. Configure the API
+### 🔧 2. Configure the API
 
+```bash
 cd apps/api
 
-Create your environment file:
-
+# Create your environment file:
 cp .env.example .env
+```
 
 Configure the required variables.
 
@@ -343,13 +348,14 @@ The repository's current documentation identifies "MONGODB_URI" and "JWT_SECRET"
 
 ---
 
-📦 3. Install API dependencies
+## 📦 3. Install API dependencies
 
+```bash
 npm install
 
-Start the development server:
-
+# Start the development server:
 npm run dev
+```
 
 The API runs by default on:
 
@@ -357,29 +363,33 @@ http://localhost:4000
 
 Verify the server:
 
+```bash
 curl http://localhost:4000/health
+```
 
 Expected response:
 
+```json
 {
   "status": "ok"
 }
+```
 
 ---
 
-📱 4. Run the Mobile Application
+## 📱 4. Run the Mobile Application
 
 Open another terminal:
 
+```bash
 cd apps/mobile
 
-Install dependencies:
-
+# Install dependencies:
 npm install
 
-Start Expo:
-
+# Start Expo:
 npx expo start
+```
 
 You can then:
 
@@ -391,7 +401,7 @@ The current mobile client defaults to the local API and can be configured throug
 
 ---
 
-🧪 Development Workflow
+## 🧪 Development Workflow
 
 Recommended workflow:
 
@@ -415,7 +425,7 @@ Recommended workflow:
 
 ---
 
-🗺️ Roadmap
+## 🗺️ Roadmap
 
 HealthLog is being developed incrementally.
 
@@ -476,7 +486,7 @@ Longer-term development may explore:
 
 ---
 
-🧭 Product Philosophy
+## 🧭 Product Philosophy
 
 HealthLog follows several principles.
 
@@ -506,7 +516,7 @@ Healthcare software should reduce complexity rather than create more of it.
 
 ---
 
-⚠️ Medical Disclaimer
+## ⚠️ Medical Disclaimer
 
 HealthLog is a health-record and information-management project.
 
@@ -518,7 +528,7 @@ Always consult a qualified healthcare professional for medical concerns and clin
 
 ---
 
-🔒 Security
+## 🔒 Security
 
 Health information is highly sensitive.
 
@@ -530,7 +540,7 @@ Security practices will continue to evolve as HealthLog moves toward production 
 
 ---
 
-🤝 Contributing
+## 🤝 Contributing
 
 Contributions are welcome.
 
@@ -559,7 +569,7 @@ The repository contains a developer guide and phased roadmap intended to explain
 
 ---
 
-📚 Documentation
+## 📚 Documentation
 
 Detailed product and engineering documentation is available inside:
 
@@ -575,7 +585,7 @@ docs/HealthLog-Phase-Roadmap.md
 
 ---
 
-🌍 Why HealthLog Matters
+## 🌍 Why HealthLog Matters
 
 Healthcare information follows a patient throughout life, but the digital representation of that information is often fragmented.
 
@@ -587,7 +597,7 @@ The long-term vision is a patient-controlled health record that can transform fr
 
 ---
 
-👨‍💻 Built By
+## 👨‍💻 Built By
 
 Mohammad Altaf Khan
 
@@ -604,7 +614,7 @@ Building HealthLog as an exploration of:
 
 ---
 
-⭐ Support the Project
+## ⭐ Support the Project
 
 If you find HealthLog interesting:
 
