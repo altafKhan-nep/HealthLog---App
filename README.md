@@ -58,7 +58,6 @@ Secure Sharing
        ↓
 Better-informed Conversations with Healthcare Professionals
 
-The goal is not to replace doctors.
 
 The goal is to help patients arrive better prepared.
 
